@@ -23,6 +23,12 @@ coverage/
 npm-debug.log*
 pnpm-debug.log*
 
+# Private work inventory — discovery notes, unpublished project data.
+# Only the template and README are tracked; everything else stays local.
+/inventory/*
+!/inventory/README.md
+!/inventory/TEMPLATE.md
+
 # OS
 .DS_Store
 Thumbs.db
