@@ -2,8 +2,16 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
-    // No test suites exist yet; keep `vitest run` green until packages add them.
-    passWithNoTests: true,
-    include: ['packages/*/src/**/*.{test,spec}.{ts,tsx}'],
+    projects: [
+      {
+        test: {
+          name: 'packages',
+          environment: 'node',
+          include: ['packages/*/src/**/*.{test,spec}.{ts,tsx}'],
+          passWithNoTests: true,
+        },
+      },
+      './apps/web/vite.config.ts',
+    ],
   },
 });
