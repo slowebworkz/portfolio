@@ -15,6 +15,19 @@
 **Status:** live · archived · gone · private · abandoned
 **Evidence:** GitHub · live URL · Wayback · screenshots · local files · none
 **Publish?:** yes · anonymized · needs-permission · NDA / no
+**Depth:** skip · list entry · short write-up · full case study
+
+### Claim confidence
+
+Every technical detail is tagged so the portfolio never overstates:
+
+- **[C] Confirmed** — source code, docs, or direct evidence in hand.
+- **[I] Inferred** — deduced from an archived page / artifact; plausible, not certain.
+- **[R] Recollection** — personal memory only.
+
+Do not invent details just because an archived site makes them plausible. An
+archived capture is evidence of how the site looked in a period, not licence to
+reconstruct or republish it.
 
 ---
 
@@ -27,8 +40,9 @@ Duplicate the block below per project.
 - **Category:**
 - **Period:** <start> – <end or "now">
 - **Role:**
+- **Client / organization:** <or "personal">
 - **One-line summary:**
-- **Technologies:**
+- **Technologies:** <tag each [C]/[I]/[R], e.g. "TypeScript [C], jQuery [I]">
 - **Status:**
 - **Current URL:** <if live>
 - **Original URL(s):** <for gone/changed sites — needed for Wayback lookup>
@@ -38,7 +52,9 @@ Duplicate the block below per project.
   - [ ] Wayback captures (approx. date range: )
   - [ ] Screenshots / assets (where: )
   - [ ] Written docs / case-study material
+  - [ ] Contemporary records (invoices, emails, contracts)
 - **Publishability:** <yes / anonymized / needs-permission / NDA> — notes:
+- **Case-study depth:** <skip / list entry / short write-up / full case study>
 - **Why it's portfolio-worthy (or not):**
 - **Open questions / things to recover:**
 
