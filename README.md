@@ -27,6 +27,9 @@ packages/
              library remains a separate package and is not vendored here.
 configs/     ESLint config split into composable modules (base, typescript),
              assembled by the root `eslint.config.ts`.
+inventory/   Private catalogue of candidate portfolio work, used to design the
+             domain model against real projects. Only README/TEMPLATE are
+             tracked; the filled-in inventory stays local (git-ignored).
 scripts/     Repository-level development and maintenance scripts. Empty for now.
 ```
 
