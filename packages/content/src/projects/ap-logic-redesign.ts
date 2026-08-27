@@ -1,0 +1,111 @@
+import { parseProject, type Project } from '@portfolio/data';
+
+export const apLogicRedesign: Project = parseProject({
+  slug: 'ap-logic-redesign',
+  title: 'AP Logic — website redesign',
+  summary:
+    'A three-month contract to build AP Logic’s website redesign: a custom WordPress theme from client comps, roughly nine times lighter than the flexslider site it replaced.',
+  category: 'contract',
+  status: 'gone',
+  period: { start: '2013', end: '2013', approximate: true, note: 'Three-month contract.' },
+  role: 'Sole developer, direct contract with the client',
+  organization: {
+    name: 'AP Logic (Applied Process Logic)',
+    kind: 'client',
+    location: 'San Luis Obispo, CA at the time; since moved to Long Beach',
+  },
+  motivation:
+    'AP Logic had new design comps and needed them built as a custom WordPress theme, replacing a heavy WordPress + flexslider site.',
+  technologies: [
+    { name: 'WordPress', confidence: 'inferred' },
+    { name: 'PHP', confidence: 'inferred' },
+    { name: 'CSS3', confidence: 'confirmed' },
+    { name: 'jQuery', confidence: 'inferred' },
+    { name: 'Modernizr', confidence: 'inferred' },
+    { name: 'html5shiv', confidence: 'inferred' },
+    { name: 'CSS3 PIE', confidence: 'inferred' },
+  ],
+  contributions: {
+    did: [
+      'Built the WordPress theme from client comps',
+      'HTML5 and CSS3 with IE 6–8 support via Modernizr, html5shiv, and CSS3 PIE',
+      'Responsive layout',
+      'Developed locally and deployed to the client’s WordPress install',
+    ],
+    didNot: ['Own the visual design — I implemented client comps'],
+  },
+  lineage: [
+    {
+      period: '≤ 2012',
+      label: 'Table-based static site',
+      description: 'Hand-built HTML, jQuery 1.3–1.4.',
+      mine: false,
+      confidence: 'inferred',
+      evidenceId: 'context-2012',
+    },
+    {
+      period: 'early–mid 2013',
+      label: 'WordPress + flexslider (~133 KB)',
+      description: 'A heavy WordPress theme. This is what the redesign replaced.',
+      mine: false,
+      confidence: 'inferred',
+      evidenceId: 'before',
+    },
+    {
+      period: '2013-10',
+      label: 'The redesign — custom theme (~15 KB)',
+      description: 'A lean custom theme, ~9× lighter, responsive, with pragmatic IE polyfills.',
+      mine: true,
+      confidence: 'confirmed',
+      evidenceId: 'after',
+    },
+  ],
+  links: [
+    {
+      label: 'The redesign (Internet Archive)',
+      url: 'https://web.archive.org/web/20131028060152/http://www.ap-logic.com/',
+      kind: 'archive',
+    },
+  ],
+  evidence: [
+    {
+      id: 'context-2012',
+      kind: 'wayback',
+      label: 'Table-based era',
+      confidence: 'inferred',
+      role: 'context',
+      originalUrl: 'http://www.ap-logic.com/',
+      archiveUrl: 'https://web.archive.org/web/20120830132739/http://www.ap-logic.com/',
+      capturedAt: '2012-08-30',
+    },
+    {
+      id: 'before',
+      kind: 'wayback',
+      label: 'WordPress + flexslider site (~133 KB) — what the redesign replaced',
+      confidence: 'inferred',
+      role: 'before',
+      originalUrl: 'http://www.ap-logic.com/',
+      archiveUrl: 'https://web.archive.org/web/20130516030421/http://www.ap-logic.com/',
+      capturedAt: '2013-05-16',
+    },
+    {
+      id: 'after',
+      kind: 'wayback',
+      label: 'The redesign (~15 KB)',
+      confidence: 'confirmed',
+      role: 'after',
+      originalUrl: 'http://www.ap-logic.com/',
+      archiveUrl: 'https://web.archive.org/web/20131028060152/http://www.ap-logic.com/',
+      capturedAt: '2013-10-28',
+    },
+  ],
+  retainedArtifacts: 'none',
+  caveats: [
+    'Gone from production — AP Logic’s current site is an unrelated Webflow rebuild. The work survives only in the Internet Archive.',
+    'No NDA; no retained source or design files.',
+    'Stack details are inferred from archived assets except CSS3, which I recall directly.',
+  ],
+  publishability: { status: 'likely', notes: 'No NDA; public site, public archive.' },
+  caseStudy: null,
+  featured: false,
+});

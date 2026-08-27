@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "The portfolio site. React + Vite + TypeScript. Shell only — no real content yet.",
+  "description": "The portfolio site. React + Vite + TypeScript.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -11,6 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@portfolio/content": "workspace:*",
     "@portfolio/data": "workspace:*",
     "react": "catalog:",
     "react-dom": "catalog:",

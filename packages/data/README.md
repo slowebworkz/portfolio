@@ -1,32 +1,51 @@
 # @portfolio/data
 
-Domain models and validation schemas for portfolio content. Presentation- and
+Domain model and validation schemas for portfolio content. Presentation- and
 storage-agnostic; no React, no database. Consumed by `@portfolio/content` (to
-validate authored content) and, later, by `apps/web`.
+validate authored content) and by `apps/web`.
 
-> **Provisional.** This model is a first draft from the project plan's
-> illustrative shapes. It will be reworked against the real work inventory
-> (`inventory/projects.md`) in Phase 3.
+Designed against the real work inventory: two site redesigns whose only evidence
+is the Internet Archive (McMillan, AP Logic), and one published package
+(Praxis Kit).
 
 ## Model
 
-| Schema             | Purpose                                                                     |
-| ------------------ | --------------------------------------------------------------------------- |
-| `ProjectSchema`    | A portfolio project: identity, timeline, role, tech, links, media           |
-| `CaseStudySchema`  | Optional long-form writeup; only `summary` is required                      |
-| `EvidenceSchema`   | Discriminated union: `wayback` / `source` / `link` / `artifact` / `account` |
-| `TechnologySchema` | A technology tagged with claim confidence                                   |
+| Schema               | Purpose                                                                                                                                                     |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ProjectSchema`      | A portfolio project (see fields below)                                                                                                                      |
+| `EvidenceSchema`     | Discriminated union: `wayback` / `source` / `package` / `link` / `artifact` / `account`, each with a `role` (`before` / `after` / `context` / `supporting`) |
+| `LineageStageSchema` | One stage in a site's history, flagged `mine: true/false`                                                                                                   |
+| `PackageInfoSchema`  | npm/registry metadata for projects that are published packages                                                                                              |
+| `CaseStudySchema`    | Optional long-form writeup; only `summary` required                                                                                                         |
 
-Every factual claim carries a **confidence** — `confirmed`, `inferred`, or
-`recollection` — so historical projects never overstate what is actually known.
+Key `Project` fields: `slug`, `title`, `summary`, `category`
+(`employment` / `contract` / `open-source` / `personal` / `experiment`),
+`status` (`active` / `live` / `gone` / `archived` / `private`), `period`
+(`start` / `end` / `approximate` / `note`), `role`, `organization`,
+`motivation`, `technologies`, `contributions` (`did` / `didNot`), `lineage`,
+`package`, `links`, `evidence`, `retainedArtifacts`, `caveats`,
+`publishability` (`status` + `notes`), `caseStudy`, `featured`.
+
+### Honesty is structural
+
+- Every technology and every evidence item carries a **confidence** —
+  `confirmed`, `inferred`, or `recollection`.
+- `contributions.didNot` records what the owner explicitly did _not_ do.
+- `lineage[].mine` separates the owner's work from what came before.
+- `caveats` holds the places where evidence and memory diverge.
 
 ## Usage
 
 ```ts
-import { parseProject, ProjectSchema } from '@portfolio/data';
+import { parseProject } from '@portfolio/data';
 
-const project = parseProject(raw); // throws on invalid input
+const project = parseProject(raw); // throws on invalid input or broken references
 ```
 
+`parseProject` runs the valibot schema **and** cross-field checks
+(`checkReferentialIntegrity`): unique evidence ids, and every
+`lineage[].evidenceId` resolving to a real evidence item.
+
 Schemas are [valibot](https://valibot.dev); types are inferred from them
-(`v.InferOutput`) so there is a single source of truth.
+(`v.InferOutput`) so there is a single source of truth. The package exports
+`./src` directly (internal package, no build step).

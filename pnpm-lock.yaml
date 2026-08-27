@@ -98,6 +98,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@portfolio/content':
+        specifier: workspace:*
+        version: link:../../packages/content
       '@portfolio/data':
         specifier: workspace:*
         version: link:../../packages/data
@@ -138,7 +141,11 @@ importers:
 
   packages/archive: {}
 
-  packages/content: {}
+  packages/content:
+    dependencies:
+      '@portfolio/data':
+        specifier: workspace:*
+        version: link:../data
 
   packages/data:
     dependencies:

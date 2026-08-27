@@ -18,21 +18,22 @@ material.
 
 ```text
 apps/
-  web/       The portfolio site: React + Vite + TypeScript. Shell only —
-             routing, layout, and an accessibility baseline, rendering
-             placeholder fixture data (see "Frontend" below).
+  web/       The portfolio site: React + Vite + TypeScript. Routing, layout,
+             and an accessibility baseline, rendering real content from
+             @portfolio/content (see "Frontend" below).
 packages/
-  content/   Structured portfolio content (projects, case studies, writing,
-             profile/about, experience, capabilities). No content authored yet.
-  data/      Shared domain models, types, and validation schemas. Presentation-
-             agnostic. No database.
+  content/   The authored portfolio content — projects now, case studies /
+             writing / profile later. Plain typed modules validated against
+             @portfolio/data. Three projects authored.
+  data/      Domain model and valibot validation schemas. Presentation- and
+             storage-agnostic. Designed against the real work inventory.
   archive/   Node/TypeScript tooling for researching historical websites,
              primarily the Internet Archive Wayback Machine / CDX API (capture
              discovery, archived-page retrieval, metadata extraction, evidence
              tracking). Not implemented yet.
   ui/        Shared presentation primitives and design-system infrastructure.
-             No design system built yet. An existing external React component
-             library remains a separate package and is not vendored here.
+             Not built yet; likely built on `praxis-kit` (the author's
+             published framework, in the dependency catalog).
 configs/     ESLint config split into composable modules (base, typescript),
              assembled by the root `eslint.config.ts`.
 docs/        Repository documentation. `architecture.md` defines what each
@@ -43,8 +44,8 @@ inventory/   Private catalogue of candidate portfolio work, used to design the
 scripts/     Repository-level development and maintenance scripts. Empty for now.
 ```
 
-Every package currently holds only a placeholder `src/index.ts` (`export {}`) so
-that `tsc --build` has an input; no real code is authored yet.
+`archive` and `ui` still hold only a placeholder `src/index.ts`; `data`,
+`content`, and `apps/web` are real.
 
 ## Tooling
 
@@ -88,11 +89,13 @@ will be added once the site is ready to publish.
 
 ## Frontend
 
-The delivery app (`apps/web`) is **React + Vite + TypeScript**. So far it is a
-shell — `react-router` routing, a base layout, and an accessibility baseline
-(skip link, landmarks, focus styles, reduced-motion and colour-scheme support),
-rendering placeholder fixture data typed with `@portfolio/data`. The portfolio
-is a content-driven, static-first site: the priority is prerendering,
+The delivery app (`apps/web`) is **React + Vite + TypeScript**: `react-router`
+routing, a base layout, and an accessibility baseline (skip link, landmarks,
+focus styles, reduced-motion and colour-scheme support), rendering the real
+projects from `@portfolio/content` — a work list and per-project pages showing
+the site lineage, what was and wasn't the author's work, evidence links, and
+caveats. The portfolio is a content-driven, static-first site: the priority is
+prerendering,
 performance, semantic HTML, accessibility, straightforward deployment, and
 minimal runtime complexity — and Vite is also a natural home for the existing
 React component library.
@@ -113,12 +116,15 @@ adopted later if build times or task orchestration justify it.
 
 ## Direction
 
-1. Compile a private inventory of past and current work (`inventory/`).
-2. Design the domain model in `data` against that inventory; author content
-   against it in `content` (leaning toward `project.yaml` + `case-study.mdx`).
-3. Build `apps/web` (React + Vite) consuming `content` and `data`.
-4. Take one strong project all the way through — content, schema, page, case
-   study, tests, deployment — to validate the architecture.
+1. Compile a private inventory of past and current work (`inventory/`). _Ongoing._
+2. Design the domain model in `data` against that inventory and author the
+   projects in `content`. _Done for the first three projects; case studies and
+   more entries still to come._
+3. Build `apps/web` (React + Vite) consuming `content` and `data`. _In
+   progress — work list and project pages render; prerendering and design-system
+   integration still to do._
+4. Take one strong project all the way through — long-form case study, page,
+   tests, deployment — to validate the architecture.
 5. Build out `archive` as Wayback/CDX research tooling and fold validated
    historical evidence into the content.
 6. Expand: more case studies, writing, technical demos; revisit hosting
