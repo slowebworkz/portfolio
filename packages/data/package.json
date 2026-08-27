@@ -1,0 +1,16 @@
+{
+  "name": "@portfolio/data",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Shared domain models, types, and validation schemas. Presentation-agnostic; no database.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --build"
+  },
+  "dependencies": {
+    "valibot": "catalog:"
+  }
+}

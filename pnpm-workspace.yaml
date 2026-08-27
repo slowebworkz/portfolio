@@ -1,0 +1,47 @@
+packages:
+  - 'apps/*'
+  - 'packages/*'
+
+allowBuilds:
+  esbuild: true
+  unrs-resolver: true
+onlyBuiltDependencies:
+  - esbuild
+
+catalog:
+  # Types
+  '@types/node': ^26.3.0
+
+  # ESLint
+  '@eslint/js': ^10.0.1
+  eslint: ^10.9.1
+  eslint-config-prettier: ^10.1.8
+  typescript-eslint: ^8.68.0
+
+  # Tooling
+  jiti: ^2.7.0 # lets ESLint load the TypeScript flat config
+  prettier: ^3.9.6
+  tsdown: ^0.22.14
+  typescript: ^6.0.3
+
+  # Validation
+  valibot: ^1.4.2
+
+  # React / app
+  react: ^19.2.8
+  react-dom: ^19.2.8
+  react-router: ^8.3.0
+  '@types/react': ^19.2.18
+  '@types/react-dom': ^19.2.5
+  vite: ^8.2.2
+  '@vitejs/plugin-react': ^6.1.0
+
+  # Testing
+  vitest: ^4.1.11
+  '@testing-library/react': ^16.3.3
+  '@testing-library/jest-dom': ^7.0.1
+  happy-dom: ^20.11.12
+
+minimumReleaseAgeExclude:
+  - '@testing-library/react@16.3.3'
+  - happy-dom@20.11.12

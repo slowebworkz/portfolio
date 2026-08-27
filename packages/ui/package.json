@@ -1,0 +1,10 @@
+{
+  "name": "@portfolio/ui",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Shared presentation primitives and design-system infrastructure. No design system built yet; existing external component library is not vendored here.",
+  "scripts": {
+    "typecheck": "tsc --build"
+  }
+}
