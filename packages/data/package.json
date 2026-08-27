@@ -4,7 +4,13 @@
   "private": true,
   "type": "module",
   "description": "Shared domain models, types, and validation schemas. Presentation-agnostic; no database.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
   "scripts": {
     "typecheck": "tsc --build"
+  },
+  "dependencies": {
+    "valibot": "catalog:"
   }
 }
