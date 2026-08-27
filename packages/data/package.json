@@ -1,0 +1,10 @@
+{
+  "name": "@portfolio/data",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Shared domain models, types, and validation schemas. Presentation-agnostic; no database.",
+  "scripts": {
+    "typecheck": "tsc --build"
+  }
+}

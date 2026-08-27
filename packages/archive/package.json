@@ -1,0 +1,10 @@
+{
+  "name": "@portfolio/archive",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Node/TypeScript tooling for researching historical websites (Internet Archive Wayback/CDX). Not implemented yet.",
+  "scripts": {
+    "typecheck": "tsc --build"
+  }
+}
