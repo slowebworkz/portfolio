@@ -5,14 +5,21 @@ content, supporting research tooling, and shared presentation primitives.
 
 ## Status
 
-Early scaffolding. The repository currently contains only workspace structure and
-shared tooling configuration (TypeScript, ESLint, Prettier, Vitest, CI). No
-portfolio content, domain models, tooling implementations, UI, or frontend
-application exist yet.
+Early scaffolding. The repository currently contains workspace structure, shared
+tooling configuration (TypeScript, ESLint, Prettier, Vitest, CI), and documented
+and lint-enforced package boundaries. No portfolio content, domain models,
+tooling implementations, UI, or frontend application exist yet.
+
+The repository is private for now. It will be made public once it contains
+meaningful work and has been reviewed for client-sensitive or confidential
+material.
 
 ## Structure
 
 ```text
+apps/
+  web/       The portfolio site: React + Vite + TypeScript. Not created yet
+             (see "Frontend" below).
 packages/
   content/   Structured portfolio content (projects, case studies, writing,
              profile/about, experience, capabilities). No content authored yet.
@@ -27,6 +34,8 @@ packages/
              library remains a separate package and is not vendored here.
 configs/     ESLint config split into composable modules (base, typescript),
              assembled by the root `eslint.config.ts`.
+docs/        Repository documentation. `architecture.md` defines what each
+             package owns and the allowed dependency direction.
 inventory/   Private catalogue of candidate portfolio work, used to design the
              domain model against real projects. Only README/TEMPLATE are
              tracked; the filled-in inventory stays local (git-ignored).
@@ -52,6 +61,9 @@ that `tsc --build` has an input; no real code is authored yet.
   modules under `configs/`, with type-aware `typescript-eslint` rules) and
   Prettier.
 - **Tests:** Vitest at the repo root; packages add suites under `src/` as needed.
+- **Package boundaries:** each package's allowed dependencies are documented in
+  [`docs/architecture.md`](docs/architecture.md) and enforced by ESLint
+  (`no-restricted-imports` on `@portfolio/*` specifiers, per package).
 
 ### Commands
 
@@ -68,13 +80,20 @@ pnpm test
 `.github/workflows/ci.yml` checks out the repo, enables pnpm, sets up Node from
 `.nvmrc`, installs with the frozen lockfile, and runs lint, format check,
 typecheck, and tests. It is written to stay useful as packages are added: the
-aggregate scripts fan out across the workspace.
+aggregate scripts fan out across the workspace. A build step (and, later, a
+deployment step) will be added once `apps/web` exists.
 
-## No frontend framework yet
+## Frontend
 
-There is intentionally no Next.js / Astro / Vite app at this stage. The current
-focus is the content model and supporting packages; the delivery framework will
-be chosen later, once those are further along.
+The delivery app (`apps/web`, not created yet) will be **React + Vite +
+TypeScript**. The portfolio is a content-driven, static-first site: the priority
+is prerendering, performance, semantic HTML, accessibility, straightforward
+deployment, and minimal runtime complexity — and Vite is also a natural home for
+the existing React component library.
+
+Next.js / SSR / server functions are deliberately deferred until a concrete
+requirement calls for them. `content` and `data` stay framework-neutral, so a
+different frontend could consume them later without rework.
 
 ## Why not Turborepo (yet)
 
@@ -85,9 +104,17 @@ adopted later if build times or task orchestration justify it.
 
 ## Direction
 
-- Define the domain model in `data` and author content against it in `content`.
-- Build out `archive` as Wayback/CDX research tooling.
-- Choose and add a frontend framework that consumes `content` and `data`.
-- Introduce `ui` primitives (and possibly the external component library) when
-  there is a frontend to use them.
-- Revisit build orchestration if and when the workspace warrants it.
+1. Compile a private inventory of past and current work (`inventory/`).
+2. Design the domain model in `data` against that inventory; author content
+   against it in `content` (leaning toward `project.yaml` + `case-study.mdx`).
+3. Build `apps/web` (React + Vite) consuming `content` and `data`.
+4. Take one strong project all the way through — content, schema, page, case
+   study, tests, deployment — to validate the architecture.
+5. Build out `archive` as Wayback/CDX research tooling and fold validated
+   historical evidence into the content.
+6. Expand: more case studies, writing, technical demos; revisit hosting
+   (GitHub Pages vs Vercel), build orchestration, and framework experiments.
+
+Guiding principle: start simple, add complexity when the system earns it.
+Projects are presented as engineering stories with evidence, not technology
+lists.
