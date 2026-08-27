@@ -18,8 +18,9 @@ material.
 
 ```text
 apps/
-  web/       The portfolio site: React + Vite + TypeScript. Not created yet
-             (see "Frontend" below).
+  web/       The portfolio site: React + Vite + TypeScript. Shell only —
+             routing, layout, and an accessibility baseline, rendering
+             placeholder fixture data (see "Frontend" below).
 packages/
   content/   Structured portfolio content (projects, case studies, writing,
              profile/about, experience, capabilities). No content authored yet.
@@ -73,23 +74,31 @@ pnpm lint
 pnpm format           # check; `pnpm format:write` to apply
 pnpm typecheck        # runs each package's typecheck script if present
 pnpm test
+pnpm build            # runs each package's build script if present
+pnpm --filter @portfolio/web dev   # run the site locally
 ```
 
 ## CI
 
 `.github/workflows/ci.yml` checks out the repo, enables pnpm, sets up Node from
 `.nvmrc`, installs with the frozen lockfile, and runs lint, format check,
-typecheck, and tests. It is written to stay useful as packages are added: the
-aggregate scripts fan out across the workspace. A build step (and, later, a
-deployment step) will be added once `apps/web` exists.
+typecheck, tests, and build. It is written to stay useful as packages are
+added: the aggregate scripts fan out across the workspace. A deployment step
+will be added once the site is ready to publish.
 
 ## Frontend
 
-The delivery app (`apps/web`, not created yet) will be **React + Vite +
-TypeScript**. The portfolio is a content-driven, static-first site: the priority
-is prerendering, performance, semantic HTML, accessibility, straightforward
-deployment, and minimal runtime complexity — and Vite is also a natural home for
-the existing React component library.
+The delivery app (`apps/web`) is **React + Vite + TypeScript**. So far it is a
+shell — `react-router` routing, a base layout, and an accessibility baseline
+(skip link, landmarks, focus styles, reduced-motion and colour-scheme support),
+rendering placeholder fixture data typed with `@portfolio/data`. The portfolio
+is a content-driven, static-first site: the priority is prerendering,
+performance, semantic HTML, accessibility, straightforward deployment, and
+minimal runtime complexity — and Vite is also a natural home for the existing
+React component library.
+
+Prerendering / static generation is not wired up yet; it comes with the first
+real project (Phase 4 of the plan).
 
 Next.js / SSR / server functions are deliberately deferred until a concrete
 requirement calls for them. `content` and `data` stay framework-neutral, so a
