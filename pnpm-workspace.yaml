@@ -23,5 +23,8 @@ catalog:
   tsdown: ^0.22.14
   typescript: ^6.0.3
 
+  # Validation
+  valibot: ^1.4.2
+
   # Testing
   vitest: ^4.1.11
