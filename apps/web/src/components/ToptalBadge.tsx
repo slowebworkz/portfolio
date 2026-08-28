@@ -6,10 +6,10 @@ const RESUME_URL =
 
 export function ToptalBadge() {
   return (
-    <div className="toptal-badge">
-      <div className="toptal-badge__inner">
+    <div className="hex-clip w-[min(14rem,100%)] bg-accent p-[3px]">
+      <div className="hex-clip flex flex-col items-center gap-2 bg-bg px-4 pt-7 pb-10 text-center text-fg">
         <svg
-          className="toptal-badge__stars"
+          className="h-auto w-16 fill-accent"
           viewBox="0 0 60 17"
           xmlns="http://www.w3.org/2000/svg"
           aria-hidden="true"
@@ -17,14 +17,14 @@ export function ToptalBadge() {
           <path d="m20.85 6.38 6.06-.89 2.72-5.49 2.71 5.49 6.06.89-4.39 4.28 1.04 6.03-5.42-2.85-5.43 2.85 1.04-6.03zm33.06 7.17 1.85-.27.82-1.67.83 1.67 1.84.27-1.33 1.31.31 1.83-1.65-.87-1.66.87.32-1.83zm-3.38-3.01-3.61-.52-1.61-3.26-1.62 3.26-3.6.52 2.6 2.55-.61 3.59 3.23-1.69 3.21 1.69-.61-3.59zm-45.19 3.01-1.85-.27-.82-1.67-.83 1.67-1.84.27 1.33 1.31-.31 1.83 1.65-.87 1.65.87-.31-1.83zm3.38-3.01 3.61-.52 1.61-3.26 1.61 3.26 3.61.52-2.6 2.55.61 3.59-3.23-1.69-3.22 1.69.62-3.59z" />
         </svg>
 
-        <h3 className="toptal-badge__rank">TOP 3% TALENT</h3>
+        <h3 className="m-0 text-lg leading-none font-bold">TOP 3% TALENT</h3>
 
-        <div className="toptal-badge__rule" aria-hidden="true" />
+        <div className="h-px w-28 bg-border" aria-hidden="true" />
 
-        <span className="toptal-badge__vetted">Vetted by</span>
+        <span className="text-sm text-muted">Vetted by</span>
 
         <svg
-          className="toptal-badge__wordmark"
+          className="h-auto w-[6.25rem] fill-current"
           viewBox="0 0 108 30"
           xmlns="http://www.w3.org/2000/svg"
           role="img"
@@ -44,7 +44,7 @@ export function ToptalBadge() {
         </svg>
 
         <a
-          className="toptal-badge__cta"
+          className="mt-1 rounded-md bg-accent px-5 py-1 text-sm text-bg no-underline hover:underline"
           href={RESUME_URL}
           target="_blank"
           rel="noopener noreferrer"

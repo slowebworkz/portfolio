@@ -1,4 +1,5 @@
 /// <reference types="vitest/config" />
+import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
@@ -6,7 +7,7 @@ import { defineConfig } from 'vite';
 const base = process.env.SITE_BASE ?? '/';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
   base,
   build: {
     outDir: 'dist',
