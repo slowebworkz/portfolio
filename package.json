@@ -10,6 +10,8 @@
     "pnpm": ">=11.0.0"
   },
   "scripts": {
+    "dev": "pnpm --filter @portfolio/web dev",
+    "preview": "pnpm --filter @portfolio/web preview",
     "typecheck": "pnpm -r --if-present typecheck",
     "build": "pnpm -r --if-present build",
     "lint": "eslint .",

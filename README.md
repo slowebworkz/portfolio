@@ -76,7 +76,8 @@ pnpm format           # check; `pnpm format:write` to apply
 pnpm typecheck        # runs each package's typecheck script if present
 pnpm test
 pnpm build            # runs each package's build script if present
-pnpm --filter @portfolio/web dev   # run the site locally
+pnpm dev              # run the site locally (Vite dev server)
+pnpm preview          # serve the production build
 ```
 
 ## CI
