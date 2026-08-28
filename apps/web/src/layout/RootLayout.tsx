@@ -1,6 +1,8 @@
 import { profile } from '@portfolio/content';
 import { NavLink, Outlet } from 'react-router';
 
+import { useDocumentHead } from '../useDocumentHead.ts';
+
 const NAV = [
   { to: '/', label: 'Home', end: true },
   { to: '/work', label: 'Work', end: false },
@@ -10,6 +12,8 @@ const NAV = [
 ];
 
 export function RootLayout() {
+  useDocumentHead();
+
   return (
     <>
       <a className="skip-link" href="#main">
