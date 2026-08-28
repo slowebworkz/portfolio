@@ -1,9 +1,14 @@
 import { experience, profile } from '@portfolio/content';
 import { Link } from 'react-router';
 
+import { ToptalBadge } from '../components/ToptalBadge.tsx';
 import { formatPeriod } from '../format/period.ts';
 
 export function About() {
+  const otherCredentials = (profile.credentials ?? []).filter(
+    (credential) => credential.issuer !== 'Toptal',
+  );
+
   return (
     <>
       <section>
@@ -15,18 +20,19 @@ export function About() {
         {profile.location && <p className="meta">{profile.location}</p>}
       </section>
 
-      {profile.credentials && profile.credentials.length > 0 && (
-        <section aria-labelledby="credentials-heading">
-          <h2 id="credentials-heading">Credentials</h2>
+      <section aria-labelledby="credentials-heading">
+        <h2 id="credentials-heading">Credentials</h2>
+        <ToptalBadge />
+        {otherCredentials.length > 0 && (
           <ul>
-            {profile.credentials.map((credential) => (
+            {otherCredentials.map((credential) => (
               <li key={credential.label}>
                 <a href={credential.url}>{credential.label}</a> — {credential.issuer}
               </li>
             ))}
           </ul>
-        </section>
-      )}
+        )}
+      </section>
 
       <section aria-labelledby="experience-heading">
         <h2 id="experience-heading">Experience</h2>
