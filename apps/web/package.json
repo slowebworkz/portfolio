@@ -6,7 +6,8 @@
   "description": "The portfolio site. React + Vite + TypeScript.",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && vite build --ssr src/entry-server.tsx --outDir dist-server && node scripts/prerender.mjs",
+    "build:spa": "vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit"
   },
