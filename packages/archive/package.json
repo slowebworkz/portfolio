@@ -5,6 +5,7 @@
   "type": "module",
   "description": "Node/TypeScript tooling for researching historical websites (Internet Archive Wayback/CDX). Not implemented yet.",
   "scripts": {
-    "typecheck": "tsc --build"
+    "typecheck": "tsc --build",
+    "clean": "tsc --build --clean && rm -rf dist"
   }
 }

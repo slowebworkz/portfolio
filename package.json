@@ -11,14 +11,17 @@
   },
   "scripts": {
     "dev": "pnpm --filter @portfolio/web dev",
+    "build": "pnpm -r --if-present build",
     "preview": "pnpm --filter @portfolio/web preview",
     "typecheck": "pnpm -r --if-present typecheck",
-    "build": "pnpm -r --if-present build",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "format": "prettier --check .",
     "format:write": "prettier --write .",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "check": "pnpm run lint && pnpm run format && pnpm run typecheck && pnpm run test && pnpm run build",
+    "clean": "pnpm -r --if-present clean && rm -rf coverage node_modules/.vite"
   },
   "devDependencies": {
     "@eslint/js": "catalog:",

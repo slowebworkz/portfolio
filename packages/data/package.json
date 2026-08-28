@@ -8,7 +8,8 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "typecheck": "tsc --build"
+    "typecheck": "tsc --build",
+    "clean": "tsc --build --clean && rm -rf dist"
   },
   "dependencies": {
     "valibot": "catalog:"
