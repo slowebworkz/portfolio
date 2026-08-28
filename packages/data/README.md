@@ -17,6 +17,8 @@ is the Internet Archive (McMillan, AP Logic), and one published package
 | `LineageStageSchema` | One stage in a site's history, flagged `mine: true/false`                                                                                                   |
 | `PackageInfoSchema`  | npm/registry metadata for projects that are published packages                                                                                              |
 | `CaseStudySchema`    | Optional long-form writeup; only `summary` required                                                                                                         |
+| `ProfileSchema`      | The person — name, tagline, bio, links, credentials                                                                                                         |
+| `ExperienceSchema`   | A résumé-style role (full-time / contract / independent), `named` true/false, optional `relatedProject`                                                     |
 
 Key `Project` fields: `slug`, `title`, `summary`, `category`
 (`employment` / `contract` / `open-source` / `personal` / `experiment`),
@@ -37,14 +39,15 @@ Key `Project` fields: `slug`, `title`, `summary`, `category`
 ## Usage
 
 ```ts
-import { parseProject } from '@portfolio/data';
+import { parseProject, parseProfile, parseExperience } from '@portfolio/data';
 
 const project = parseProject(raw); // throws on invalid input or broken references
 ```
 
 `parseProject` runs the valibot schema **and** cross-field checks
 (`checkReferentialIntegrity`): unique evidence ids, and every
-`lineage[].evidenceId` resolving to a real evidence item.
+`lineage[].evidenceId` resolving to a real evidence item. `parseProfile` /
+`parseExperience` are schema-only.
 
 Schemas are [valibot](https://valibot.dev); types are inferred from them
 (`v.InferOutput`) so there is a single source of truth. The package exports

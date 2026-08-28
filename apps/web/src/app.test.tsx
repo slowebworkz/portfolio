@@ -31,6 +31,20 @@ describe('app shell', () => {
     expect(await screen.findByRole('link', { name: /McMillan Study Guides/i })).toBeInTheDocument();
   });
 
+  it('renders the profile and experience timeline on /about', async () => {
+    renderAt('/about');
+    expect(
+      await screen.findByRole('heading', { level: 2, name: /experience/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/FastSpring/)).toBeInTheDocument();
+  });
+
+  it('shows contact links on /contact', async () => {
+    renderAt('/contact');
+    const main = await screen.findByRole('main');
+    expect(within(main).getByRole('link', { name: /GitHub/i })).toBeInTheDocument();
+  });
+
   it('renders a not-found page for an unknown route', async () => {
     renderAt('/nope');
     expect(

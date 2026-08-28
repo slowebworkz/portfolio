@@ -1,6 +1,6 @@
 import * as v from 'valibot';
 
-import { ClaimConfidenceSchema, IsoDateSchema } from './common.js';
+import { ClaimConfidenceSchema, IsoDateSchema } from './common.ts';
 
 /**
  * Evidence backing a project or a claim about it. For much of the historical

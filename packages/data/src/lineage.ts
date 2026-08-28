@@ -1,6 +1,6 @@
 import * as v from 'valibot';
 
-import { ClaimConfidenceSchema } from './common.js';
+import { ClaimConfidenceSchema } from './common.ts';
 
 /**
  * One stage in a site's history — used by the redesign projects, where "before"

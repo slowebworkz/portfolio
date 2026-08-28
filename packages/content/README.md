@@ -1,8 +1,9 @@
 # @portfolio/content
 
-The authored portfolio content — projects and (eventually) case studies,
-writing, and profile. Validated against `@portfolio/data` at module load and in
-tests. Framework-neutral: plain typed modules, no MDX or content framework yet.
+The authored portfolio content — projects, the profile, the experience
+timeline, and (eventually) case studies and writing. Validated against
+`@portfolio/data` at module load and in tests. Framework-neutral: plain typed
+modules, no MDX or content framework yet.
 
 ## Layout
 
@@ -11,6 +12,8 @@ src/
   projects/
     <slug>.ts        one project each; exports a validated `Project`
     index.ts         `projects`, `getProject(slug)`, `getFeaturedProjects()`
+  profile.ts         the person — name, bio, links, credentials
+  experience.ts      résumé-style role timeline, newest first
   index.ts           public surface
 ```
 
@@ -35,6 +38,13 @@ broken, so a bad edit fails `typecheck` / `test`, not production.
 
 Case studies are `null` for now — the structured metadata is in place; the
 long-form writing is a separate pass.
+
+`experience.ts` is a résumé-style timeline (full-time roles from Karsten's
+public Toptal résumé, contract work aggregated and unnamed). `profile.ts` holds
+the links + the Toptal credential.
+
+Relative imports use the real `.ts` extension (the repo sets
+`rewriteRelativeImportExtensions`); cross-package imports use `@portfolio/data`.
 
 ## Not here
 

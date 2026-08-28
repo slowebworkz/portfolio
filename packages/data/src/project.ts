@@ -6,11 +6,11 @@ import {
   PublishabilitySchema,
   SlugSchema,
   TechnologySchema,
-} from './common.js';
-import { CaseStudySchema } from './case-study.js';
-import { EvidenceSchema } from './evidence.js';
-import { LineageStageSchema } from './lineage.js';
-import { PackageInfoSchema } from './package-info.js';
+} from './common.ts';
+import { CaseStudySchema } from './case-study.ts';
+import { EvidenceSchema } from './evidence.ts';
+import { LineageStageSchema } from './lineage.ts';
+import { PackageInfoSchema } from './package-info.ts';
 
 /** How the work was done. */
 export const ProjectCategorySchema = v.picklist([

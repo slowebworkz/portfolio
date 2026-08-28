@@ -170,6 +170,16 @@ code {
   margin: 0;
 }
 
+.timeline {
+  display: grid;
+  gap: calc(var(--space) * 1.5);
+  padding-left: 1.25rem;
+}
+
+.timeline__head {
+  margin-bottom: 0.25rem;
+}
+
 .lineage {
   display: grid;
   gap: var(--space);

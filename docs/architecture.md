@@ -54,10 +54,11 @@ any database or persistence layer.
 
 ### `content`
 
-**Owns:** the authored portfolio content itself (projects, and later case
-studies, writing, profile), as plain typed modules validated against `data`'s
-schemas at module load and in tests. No MDX / content framework yet. Content the
-inventory marks `private` never lands here.
+**Owns:** the authored portfolio content — projects, the profile, the
+experience timeline, and later case studies and writing — as plain typed
+modules validated against `data`'s schemas at module load and in tests. No MDX /
+content framework yet. Content the inventory marks `private` never lands here;
+NDA'd client work is aggregated and unnamed.
 
 **Does not own:** the schemas it validates against (those are `data`'s); any
 rendering of the content; any tooling that _generates_ content (e.g. archive

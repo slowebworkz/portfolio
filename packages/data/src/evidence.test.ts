@@ -1,7 +1,7 @@
 import * as v from 'valibot';
 import { describe, expect, it } from 'vitest';
 
-import { EvidenceSchema } from './evidence.js';
+import { EvidenceSchema } from './evidence.ts';
 
 describe('EvidenceSchema', () => {
   it('accepts a Wayback capture with a role and an ISO capture date', () => {

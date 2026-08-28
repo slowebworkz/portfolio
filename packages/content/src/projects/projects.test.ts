@@ -1,7 +1,7 @@
 import { checkReferentialIntegrity } from '@portfolio/data';
 import { describe, expect, it } from 'vitest';
 
-import { getFeaturedProjects, getProject, projects } from './index.js';
+import { getFeaturedProjects, getProject, projects } from './index.ts';
 
 describe('authored projects', () => {
   it('has at least the three inventory entries', () => {
