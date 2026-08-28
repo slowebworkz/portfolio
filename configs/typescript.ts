@@ -19,7 +19,7 @@ const config = [
       parserOptions: {
         projectService: {
           // Standalone Node scripts that no tsconfig includes.
-          allowDefaultProject: ['*.mjs', 'apps/*/scripts/*.mjs'],
+          allowDefaultProject: ['*.mjs', 'scripts/*.mjs', 'apps/*/scripts/*.mjs'],
         },
         tsconfigRootDir: resolve(import.meta.dirname, '..'),
       },
