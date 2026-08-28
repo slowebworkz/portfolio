@@ -27,6 +27,10 @@ catalog:
   # Validation
   valibot: ^1.4.2
 
+  # UI — the author's own published framework (github.com/slowebworkz/praxis-kit).
+  # Declared here as an available external dependency; no package consumes it yet.
+  praxis-kit: ^7.8.1
+
   # React / app
   react: ^19.2.8
   react-dom: ^19.2.8

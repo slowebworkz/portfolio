@@ -1,8 +1,8 @@
 # Architecture
 
-Status: provisional. This describes package boundaries and the allowed
-dependency direction. It will be revised once the domain model (`data`) and the
-work inventory exist — see "Open questions" below.
+This describes package boundaries and the allowed dependency direction.
+`data`, `content`, and `apps/web` are now real; `ui` and `archive` are still
+placeholders. See "Open questions" for what is still unsettled.
 
 ## Principle
 
@@ -15,10 +15,12 @@ portfolio-specific.
 
 ```text
 content ──▶ data ◀── archive
-                │
-                ▼
-         (future) apps/web ◀── ui
+   │            ▲
+   └──▶ apps/web ◀── ui
 ```
+
+`apps/web` imports `content` and `data` today; it will import `ui` once `ui`
+exists.
 
 Allowed internal edges:
 
@@ -29,21 +31,21 @@ Allowed internal edges:
 | `archive` | `data`             | `content`, `ui`              |
 | `ui`      | (nothing internal) | `data`, `content`, `archive` |
 
-A future `apps/web` sits at the bottom of the graph and may import anything.
+`apps/web` sits at the bottom of the graph and may import anything.
 
 This is enforced by ESLint (`no-restricted-imports` on `@portfolio/*`
 specifiers, per package directory — see [`configs/boundaries.ts`](../configs/boundaries.ts)).
-The rule is specifier-based rather than path-based (`import-x/no-restricted-paths`)
-because that needs working package `exports` resolution, which the packages do
-not have yet. Swap to path-based zones once they do.
+The rule is specifier-based rather than path-based (`import-x/no-restricted-paths`);
+path-based zones can wait until there's a reason to switch.
 
 ## Package responsibilities
 
 ### `data`
 
-**Owns:** the domain model — types, and validation schemas for portfolio
-entities (Project, its timeline, role, technologies, links, media, evidence,
-etc.). Presentation-agnostic and storage-agnostic.
+**Owns:** the domain model — types and valibot validation schemas for portfolio
+entities (Project, period, role, technologies, contributions, site lineage,
+package metadata, evidence, case study, publishability). Presentation-agnostic
+and storage-agnostic. See [`packages/data/README.md`](../packages/data/README.md).
 
 **Does not own:** any actual content or project data; any rendering, formatting,
 or React; any knowledge of the Wayback Machine or how evidence is gathered (it
@@ -52,9 +54,10 @@ any database or persistence layer.
 
 ### `content`
 
-**Owns:** the authored portfolio content itself (projects, case studies,
-writing, profile, experience, capabilities), stored as structured data +
-long-form prose, validated against `data`'s schemas at build/test time.
+**Owns:** the authored portfolio content itself (projects, and later case
+studies, writing, profile), as plain typed modules validated against `data`'s
+schemas at module load and in tests. No MDX / content framework yet. Content the
+inventory marks `private` never lands here.
 
 **Does not own:** the schemas it validates against (those are `data`'s); any
 rendering of the content; any tooling that _generates_ content (e.g. archive
@@ -89,5 +92,9 @@ know what a "Project" is are composition concerns for `apps/web`, not `ui`.
 - **`archive` → `data`:** allowed on the assumption evidence-record types live
   in `data`. If `archive` grows its own rich internal types that `data` doesn't
   need, reconsider whether it should depend on `data` at all.
-- **`apps/` workspace:** not created yet; `pnpm-workspace.yaml` only globs
-  `packages/*`. Add `apps/*` when the frontend framework is chosen.
+- **Content format:** currently plain typed TS modules. `project.yaml` +
+  `case-study.mdx` remains an option if authoring ergonomics or embedded
+  components justify the toolchain.
+- **`ui`:** still a placeholder. `praxis-kit` (the author's published framework)
+  is in the catalog as the likely foundation; `ui` would wrap it into
+  portfolio-specific primitives, or `apps/web` may consume `praxis-kit` directly.

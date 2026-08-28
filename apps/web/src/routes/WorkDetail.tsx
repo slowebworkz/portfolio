@@ -1,13 +1,13 @@
+import { getProject } from '@portfolio/content';
 import { Link, useParams } from 'react-router';
 
-import { projectBySlug } from '../../fixtures/projects.ts';
 import { formatPeriod } from '../format/period.ts';
 
 export function WorkDetail() {
   const { slug } = useParams();
-  const project = slug ? projectBySlug(slug) : undefined;
+  const project = slug ? getProject(slug) : undefined;
 
-  if (!project) {
+  if (!project || project.publishability.status === 'private') {
     return (
       <section>
         <h1>Project not found</h1>
@@ -33,12 +33,12 @@ export function WorkDetail() {
         </div>
         <div>
           <dt>Period</dt>
-          <dd>{formatPeriod(project.timeline)}</dd>
+          <dd>{formatPeriod(project.period)}</dd>
         </div>
         {project.organization && (
           <div>
-            <dt>Organization</dt>
-            <dd>{project.organization}</dd>
+            <dt>{project.organization.kind === 'employer' ? 'Employer' : 'Client'}</dt>
+            <dd>{project.organization.name}</dd>
           </div>
         )}
         <div>
@@ -47,19 +47,47 @@ export function WorkDetail() {
         </div>
       </dl>
 
-      {project.caseStudy ? (
-        <section aria-labelledby="case-study-heading">
-          <h2 id="case-study-heading">Case study</h2>
-          <p>{project.caseStudy.summary}</p>
-          {project.caseStudy.whatIdChange && (
+      {project.motivation && (
+        <section aria-labelledby="why-heading">
+          <h2 id="why-heading">Why</h2>
+          <p>{project.motivation}</p>
+        </section>
+      )}
+
+      {project.contributions && (
+        <section aria-labelledby="did-heading">
+          <h2 id="did-heading">What I did</h2>
+          <ul>
+            {project.contributions.did.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+          {project.contributions.didNot && project.contributions.didNot.length > 0 && (
             <>
-              <h3>What I&rsquo;d change</h3>
-              <p>{project.caseStudy.whatIdChange}</p>
+              <h3>What I didn&rsquo;t</h3>
+              <ul>
+                {project.contributions.didNot.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
             </>
           )}
         </section>
-      ) : (
-        <p>No case study yet.</p>
+      )}
+
+      {project.lineage && project.lineage.length > 0 && (
+        <section aria-labelledby="lineage-heading">
+          <h2 id="lineage-heading">How the site changed</h2>
+          <ol className="lineage">
+            {project.lineage.map((stage) => (
+              <li key={stage.label}>
+                <strong>{stage.period}</strong> — {stage.label}
+                {!stage.mine && <span className="tag">not my work</span>}
+                <p>{stage.description}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
       )}
 
       <section aria-labelledby="evidence-heading">
@@ -67,12 +95,28 @@ export function WorkDetail() {
         <ul>
           {project.evidence.map((item) => (
             <li key={item.id}>
-              {item.label} <span className="tag">{item.kind}</span>{' '}
+              {'url' in item || 'archiveUrl' in item ? (
+                <a href={'archiveUrl' in item ? item.archiveUrl : item.url}>{item.label}</a>
+              ) : (
+                item.label
+              )}{' '}
+              <span className="tag">{item.kind}</span>{' '}
               <span className="tag">{item.confidence}</span>
             </li>
           ))}
         </ul>
       </section>
+
+      {project.caveats && project.caveats.length > 0 && (
+        <section aria-labelledby="caveats-heading">
+          <h2 id="caveats-heading">Caveats</h2>
+          <ul>
+            {project.caveats.map((caveat) => (
+              <li key={caveat}>{caveat}</li>
+            ))}
+          </ul>
+        </section>
+      )}
     </article>
   );
 }

@@ -4,15 +4,16 @@ import { describe, expect, it } from 'vitest';
 import { EvidenceSchema } from './evidence.js';
 
 describe('EvidenceSchema', () => {
-  it('accepts a Wayback capture with an ISO capture date', () => {
+  it('accepts a Wayback capture with a role and an ISO capture date', () => {
     const capture = {
-      id: 'wb-1',
+      id: 'wb-before',
       kind: 'wayback',
-      label: 'Homepage as it stood in 2014',
+      label: 'Homepage as it stood in 2016',
       confidence: 'inferred',
+      role: 'before',
       originalUrl: 'http://old-client.example/',
-      archiveUrl: 'https://web.archive.org/web/20140601000000/http://old-client.example/',
-      capturedAt: '2014-06-01',
+      archiveUrl: 'https://web.archive.org/web/20160101000000/http://old-client.example/',
+      capturedAt: '2016-01-01',
     };
     expect(() => v.parse(EvidenceSchema, capture)).not.toThrow();
   });
@@ -25,9 +26,36 @@ describe('EvidenceSchema', () => {
       confidence: 'inferred',
       originalUrl: 'http://x.example/',
       archiveUrl: 'https://web.archive.org/web/x',
-      capturedAt: '2014',
+      capturedAt: '2016',
     };
     expect(() => v.parse(EvidenceSchema, capture)).toThrow();
+  });
+
+  it('rejects an unknown role', () => {
+    const capture = {
+      id: 'wb-1',
+      kind: 'wayback',
+      label: 'x',
+      confidence: 'inferred',
+      role: 'sideways',
+      originalUrl: 'http://x.example/',
+      archiveUrl: 'https://web.archive.org/web/2016/http://x.example/',
+      capturedAt: '2016-01-01',
+    };
+    expect(() => v.parse(EvidenceSchema, capture)).toThrow();
+  });
+
+  it('accepts a published-package evidence item', () => {
+    const pkg = {
+      id: 'npm',
+      kind: 'package',
+      label: 'praxis-kit on npm',
+      confidence: 'confirmed',
+      role: 'supporting',
+      url: 'https://www.npmjs.com/package/praxis-kit',
+      registry: 'npm',
+    };
+    expect(() => v.parse(EvidenceSchema, pkg)).not.toThrow();
   });
 
   it('accepts a personal-account record', () => {

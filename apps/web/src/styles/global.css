@@ -170,6 +170,20 @@ code {
   margin: 0;
 }
 
+.lineage {
+  display: grid;
+  gap: var(--space);
+  padding-left: 1.25rem;
+}
+
+.lineage .tag {
+  margin-left: 0.5rem;
+}
+
+.lineage p {
+  margin: 0.25rem 0 0;
+}
+
 .site-footer {
   border-top: 1px solid var(--color-border);
   padding-block: calc(var(--space) * 2);

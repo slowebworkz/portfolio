@@ -2,7 +2,7 @@ import { render, screen, within } from '@testing-library/react';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { describe, expect, it } from 'vitest';
 
-import { routes } from './router.tsx';
+import { routes } from './routes.tsx';
 
 function renderAt(path: string) {
   const router = createMemoryRouter(routes, { initialEntries: [path] });
@@ -20,10 +20,15 @@ describe('app shell', () => {
   });
 
   it('renders a project detail page from the slug', async () => {
-    renderAt('/work/component-library');
+    renderAt('/work/praxis-kit');
     expect(
-      await screen.findByRole('heading', { level: 1, name: /component library/i }),
+      await screen.findByRole('heading', { level: 1, name: /praxis kit/i }),
     ).toBeInTheDocument();
+  });
+
+  it('lists the authored projects on /work', async () => {
+    renderAt('/work');
+    expect(await screen.findByRole('link', { name: /McMillan Study Guides/i })).toBeInTheDocument();
   });
 
   it('renders a not-found page for an unknown route', async () => {

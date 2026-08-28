@@ -1,6 +1,8 @@
-import type { Timeline } from '@portfolio/data';
+import type { Period } from '@portfolio/data';
 
-/** "2022 – present" / "2022-01 – 2023-06" from a project timeline. */
-export function formatPeriod(timeline: Timeline): string {
-  return `${timeline.start} – ${timeline.end ?? 'present'}`;
+/** "2022 – present" / "~2013" / "2016 – 2017" from a project period. */
+export function formatPeriod(period: Period): string {
+  const end = period.end ?? 'present';
+  const range = period.end === period.start ? period.start : `${period.start} – ${end}`;
+  return period.approximate ? `~${range}` : range;
 }

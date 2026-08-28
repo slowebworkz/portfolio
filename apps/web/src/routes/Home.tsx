@@ -1,9 +1,8 @@
+import { getFeaturedProjects } from '@portfolio/content';
 import { Link } from 'react-router';
 
-import { projects } from '../../fixtures/projects.ts';
-
 export function Home() {
-  const featured = projects.filter((project) => project.featured);
+  const featured = getFeaturedProjects();
 
   return (
     <>
