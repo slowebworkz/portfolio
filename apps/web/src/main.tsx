@@ -1,5 +1,5 @@
 import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
+import { createRoot, hydrateRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router/dom';
 
 import { router } from './router.tsx';
@@ -10,8 +10,16 @@ if (!container) {
   throw new Error('Root container #root not found');
 }
 
-createRoot(container).render(
+const app = (
   <StrictMode>
     <RouterProvider router={router} />
-  </StrictMode>,
+  </StrictMode>
 );
+
+// Prerendered pages ship with markup in #root — hydrate those; fall back to a
+// fresh client render (dev, or any route the prerender step didn't cover).
+if (container.hasChildNodes()) {
+  hydrateRoot(container, app);
+} else {
+  createRoot(container).render(app);
+}
