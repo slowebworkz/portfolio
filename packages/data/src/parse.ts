@@ -1,6 +1,8 @@
 import * as v from 'valibot';
 
-import { ProjectSchema, type Project } from './project.js';
+import { ExperienceSchema, type Experience } from './experience.ts';
+import { ProfileSchema, type Profile } from './profile.ts';
+import { ProjectSchema, type Project } from './project.ts';
 
 /** Parse and validate an unknown value as a `Project`; throws on failure. */
 export function parseProject(input: unknown): Project {
@@ -12,6 +14,16 @@ export function parseProject(input: unknown): Project {
 /** Non-throwing schema validation; does not run the integrity checks. */
 export function safeParseProject(input: unknown): v.SafeParseResult<typeof ProjectSchema> {
   return v.safeParse(ProjectSchema, input);
+}
+
+/** Parse and validate an unknown value as a `Profile`; throws on failure. */
+export function parseProfile(input: unknown): Profile {
+  return v.parse(ProfileSchema, input);
+}
+
+/** Parse and validate an unknown value as an `Experience`; throws on failure. */
+export function parseExperience(input: unknown): Experience {
+  return v.parse(ExperienceSchema, input);
 }
 
 /**

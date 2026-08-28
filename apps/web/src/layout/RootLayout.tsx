@@ -1,3 +1,4 @@
+import { profile } from '@portfolio/content';
 import { NavLink, Outlet } from 'react-router';
 
 const NAV = [
@@ -39,7 +40,14 @@ export function RootLayout() {
 
       <footer className="site-footer">
         <div className="container">
-          <p>Built with React, Vite, and TypeScript. Content model in progress.</p>
+          <ul className="site-nav">
+            {profile.links.map((link) => (
+              <li key={link.url}>
+                <a href={link.url}>{link.label}</a>
+              </li>
+            ))}
+          </ul>
+          <p>{profile.name} · built with React, Vite, and TypeScript.</p>
         </div>
       </footer>
     </>

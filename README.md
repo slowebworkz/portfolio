@@ -22,9 +22,9 @@ apps/
              and an accessibility baseline, rendering real content from
              @portfolio/content (see "Frontend" below).
 packages/
-  content/   The authored portfolio content — projects now, case studies /
-             writing / profile later. Plain typed modules validated against
-             @portfolio/data. Three projects authored.
+  content/   The authored portfolio content — three projects, the profile, and
+             a résumé-style experience timeline; case studies and writing
+             later. Plain typed modules validated against @portfolio/data.
   data/      Domain model and valibot validation schemas. Presentation- and
              storage-agnostic. Designed against the real work inventory.
   archive/   Node/TypeScript tooling for researching historical websites,
@@ -55,6 +55,8 @@ scripts/     Repository-level development and maintenance scripts. Empty for now
 - **Node.js:** current LTS (24.x), pinned in `.nvmrc`; `packageManager` in the
   root `package.json` pins the pnpm version.
 - **Modules:** ESM throughout (`"type": "module"`, `NodeNext` resolution).
+  Relative imports name the real source file (`./x.ts`), rewritten on emit via
+  `rewriteRelativeImportExtensions`.
 - **TypeScript:** a single strict root `tsconfig.json` holds the shared compiler
   options (`composite` enabled); each package has a small `tsconfig.json` that
   extends it and sets only `rootDir` / `outDir` / `include`. Each package's

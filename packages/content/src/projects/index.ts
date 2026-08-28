@@ -1,8 +1,8 @@
 import type { Project } from '@portfolio/data';
 
-import { apLogicRedesign } from './ap-logic-redesign.js';
-import { mcmillanRedesign } from './mcmillan-redesign.js';
-import { praxisKit } from './praxis-kit.js';
+import { apLogicRedesign } from './ap-logic-redesign.ts';
+import { mcmillanRedesign } from './mcmillan-redesign.ts';
+import { praxisKit } from './praxis-kit.ts';
 
 /** All authored projects. Order here is not display order. */
 export const projects: readonly Project[] = [praxisKit, mcmillanRedesign, apLogicRedesign];

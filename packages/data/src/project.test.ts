@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { parseProject, safeParseProject } from './parse.js';
+import { parseProject, safeParseProject } from './parse.ts';
 
 const valid = {
   slug: 'example-redesign',
