@@ -15,11 +15,16 @@ function listeningPids() {
   try {
     const out = execFileSync('lsof', ['-ti', `tcp:${port}`, '-sTCP:LISTEN'], {
       encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
     });
     return [...new Set(out.split(/\s+/u).filter(Boolean))];
-  } catch {
-    // lsof exits non-zero when nothing matches.
-    return [];
+  } catch (error) {
+    // lsof exits 1 when nothing matches; anything else is a real failure.
+    if (error?.status === 1) {
+      return [];
+    }
+    console.error('kill-dev-server: failed to query lsof. Is lsof installed?');
+    process.exit(1);
   }
 }
 
