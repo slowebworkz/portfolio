@@ -45,6 +45,12 @@ describe('app shell', () => {
     expect(within(main).getByRole('link', { name: /GitHub/i })).toBeInTheDocument();
   });
 
+  it('sets the document title from the route', async () => {
+    renderAt('/about');
+    await screen.findByRole('heading', { level: 1, name: /about/i });
+    expect(document.title).toBe('About · Karsten Huehn');
+  });
+
   it('renders a not-found page for an unknown route', async () => {
     renderAt('/nope');
     expect(

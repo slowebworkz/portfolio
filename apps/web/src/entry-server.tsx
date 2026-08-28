@@ -5,6 +5,8 @@ import { createStaticHandler, createStaticRouter, StaticRouterProvider } from 'r
 
 import { routes } from './routes.tsx';
 
+export { metaForPath } from './meta.ts';
+
 /** `/portfolio/` -> `/portfolio`; unset / `/` -> `""`. Matches the client basename. */
 const basename = (process.env.SITE_BASE ?? '/').replace(/\/$/u, '');
 const handlerOptions = basename ? { basename } : undefined;

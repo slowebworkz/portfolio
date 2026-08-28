@@ -7,7 +7,13 @@ const FILES = ['**/*.{js,mjs,cjs,ts,mts,cts,tsx}'];
 
 const config = [
   {
-    ignores: ['**/dist/**', '**/build/**', '**/node_modules/**', '**/coverage/**'],
+    ignores: [
+      '**/dist/**',
+      '**/dist-server/**',
+      '**/build/**',
+      '**/node_modules/**',
+      '**/coverage/**',
+    ],
   },
   {
     ...js.configs.recommended,
