@@ -1,32 +1,35 @@
-/* Tailwind v4, utilities only. Preflight (the base reset) is intentionally not
-   imported yet — the rest of the app still relies on user-agent element styles.
-   It gets turned on with the full design-system pass. */
+/* Tailwind v4. Preflight is on; the base typography below re-establishes the
+   document rhythm it strips, and the component classes are the site chrome. */
 @layer theme, base, components, utilities;
 @import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/preflight.css' layer(base);
 @import 'tailwindcss/utilities.css' layer(utilities);
 
 /* Design tokens — the source of truth. `@theme` emits these as `:root` custom
-   properties and generates the matching utilities (`bg-bg`, `text-muted`, …). */
+   properties and generates the matching utilities (`bg-bg`, `text-muted`, …).
+   All authored colours are OKLCH — no hex/rgb/hsl. Neutrals carry a faint cool
+   cast (hue 285, very low chroma) in both themes so the greys feel of a piece
+   with the accent rather than mathematically flat. */
 @theme {
   --font-sans:
     ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
 
-  --color-bg: #ffffff;
-  --color-fg: #1a1a1a;
-  --color-muted: #5a5a5a;
-  --color-accent: #0b5fff;
-  --color-border: #e4e4e7;
+  --color-bg: oklch(100% 0 0);
+  --color-fg: oklch(18% 0.005 285);
+  --color-muted: oklch(45% 0.01 285);
+  --color-accent: oklch(52% 0.24 255);
+  --color-border: oklch(91% 0.01 285);
 }
 
 /* Dark mode swaps the token values; utilities read them through `var()`. */
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-bg: #101012;
-    --color-fg: #ececec;
-    --color-muted: #a1a1aa;
-    --color-accent: #6ea8fe;
-    --color-border: #2a2a30;
+    --color-bg: oklch(16% 0.01 285);
+    --color-fg: oklch(94% 0.01 285);
+    --color-muted: oklch(70% 0.015 285);
+    --color-accent: oklch(72% 0.15 255);
+    --color-border: oklch(29% 0.015 285);
   }
 }
 
@@ -37,183 +40,189 @@
   --space: 1rem;
 }
 
-/* Hexagon mask shared by the Toptal badge's frame and inner face. */
-@utility hex-clip {
-  clip-path: polygon(50% 0, 100% 24%, 100% 76%, 50% 100%, 0 76%, 0 24%);
-}
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    color: var(--color-fg);
+    background: var(--color-bg);
+    text-rendering: optimizeLegibility;
+  }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+  h1,
+  h2,
+  h3 {
+    font-weight: 700;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
 
-body {
-  margin: 0;
-  font-family: var(--font-sans);
-  line-height: 1.6;
-  color: var(--color-fg);
-  background: var(--color-bg);
-}
+  h1 {
+    font-size: 2rem;
+    margin-block: 0 0.75rem;
+  }
 
-a {
-  color: var(--color-accent);
-}
+  h2 {
+    font-size: 1.5rem;
+    margin-block: 2rem 0.5rem;
+  }
 
-code {
-  font-family: var(--font-mono);
-  font-size: 0.9em;
-}
+  h3 {
+    font-size: 1.15rem;
+    margin-block: 1.5rem 0.25rem;
+  }
 
-:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-}
+  p {
+    margin-block: 0 0.75rem;
+  }
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+  a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  /* Content lists get their markers back — zero-specificity so `.card-list`
+     and `.site-nav` (which opt out) still win. `<ol>` stays numbered. */
+  .site-main :where(ul) {
+    list-style: disc;
+  }
+
+  .site-main :where(ol) {
+    list-style: decimal;
+  }
+
+  .site-main :where(ul, ol) {
+    margin-block: 0 var(--space);
+    padding-left: 1.5rem;
+  }
+
+  .site-main :where(li) {
+    margin-block: 0.25rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
-.container {
-  width: 100%;
-  max-width: 60rem;
-  margin-inline: auto;
-  padding-inline: var(--space);
-}
+@layer components {
+  /* Not Tailwind's `container` — the site's own page-width wrapper. */
+  .site-container {
+    @apply mx-auto w-full max-w-[60rem] px-4;
+  }
 
-.skip-link {
-  position: absolute;
-  left: -9999px;
-  top: 0;
-  padding: 0.5rem 1rem;
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
-}
+  .skip-link {
+    @apply absolute top-0 left-[-9999px] border border-border bg-bg px-4 py-2 no-underline;
+  }
 
-.skip-link:focus {
-  left: 0.5rem;
-  top: 0.5rem;
-  z-index: 10;
-}
+  .skip-link:focus {
+    @apply top-2 left-2 z-10 rounded;
+  }
 
-.site-header {
-  border-bottom: 1px solid var(--color-border);
-}
+  .site-header {
+    @apply border-b border-border;
+  }
 
-.site-header__inner {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space);
-  align-items: center;
-  justify-content: space-between;
-  padding-block: var(--space);
-}
+  .site-header__inner {
+    @apply flex flex-wrap items-center justify-between gap-4 py-4;
+  }
 
-.site-header__mark {
-  font-weight: 700;
-  text-decoration: none;
-}
+  .site-header__mark {
+    @apply font-bold no-underline;
+  }
 
-.site-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
+  .site-nav {
+    @apply m-0 flex flex-wrap list-none gap-4 p-0;
+  }
 
-.site-nav a[aria-current='page'] {
-  font-weight: 700;
-  text-decoration: underline;
-}
+  .site-nav a[aria-current='page'] {
+    @apply font-bold;
+  }
 
-.site-main {
-  padding-block: calc(var(--space) * 2);
-}
+  .site-main {
+    @apply py-8;
+  }
 
-.site-main :is(p, li) {
-  max-width: var(--measure);
-}
+  /* Kept as CSS — a measure token reads better than an arbitrary utility. */
+  .site-main :is(p, li) {
+    max-width: var(--measure);
+  }
 
-.lede {
-  font-size: 1.15rem;
-  color: var(--color-muted);
-}
+  .lede {
+    @apply text-[1.15rem] text-muted;
+  }
 
-.meta,
-.tag {
-  color: var(--color-muted);
-  font-size: 0.9rem;
-}
+  .meta,
+  .tag {
+    @apply text-[0.9rem] text-muted;
+  }
 
-.tag {
-  border: 1px solid var(--color-border);
-  border-radius: 0.25rem;
-  padding: 0 0.35rem;
-}
+  .tag {
+    @apply rounded border border-border px-[0.35rem] py-0;
+  }
 
-.card-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: calc(var(--space) * 1.5);
-}
+  .card-list {
+    @apply m-0 grid list-none gap-6 p-0;
+  }
 
-.detail-meta {
-  display: grid;
-  gap: 0.5rem;
-  margin-block: var(--space);
-}
+  .detail-meta {
+    @apply my-4 grid gap-2;
+  }
 
-.detail-meta div {
-  display: flex;
-  gap: 0.5rem;
-}
+  .detail-meta div {
+    @apply flex gap-2;
+  }
 
-.detail-meta dt {
-  font-weight: 700;
-  min-width: 8rem;
-}
+  .detail-meta dt {
+    @apply min-w-32 font-bold;
+  }
 
-.detail-meta dd {
-  margin: 0;
-}
+  .detail-meta dd {
+    @apply m-0;
+  }
 
-.timeline {
-  display: grid;
-  gap: calc(var(--space) * 1.5);
-  padding-left: 1.25rem;
-}
+  .timeline {
+    @apply grid gap-6 pl-5;
+  }
 
-.timeline__head {
-  margin-bottom: 0.25rem;
-}
+  .timeline__head {
+    @apply mb-1;
+  }
 
-.lineage {
-  display: grid;
-  gap: var(--space);
-  padding-left: 1.25rem;
-}
+  .lineage {
+    @apply grid gap-4 pl-5;
+  }
 
-.lineage .tag {
-  margin-left: 0.5rem;
-}
+  .lineage .tag {
+    @apply ml-2;
+  }
 
-.lineage p {
-  margin: 0.25rem 0 0;
-}
+  .lineage p {
+    @apply mt-1 mb-0;
+  }
 
-.site-footer {
-  border-top: 1px solid var(--color-border);
-  padding-block: calc(var(--space) * 2);
-  color: var(--color-muted);
-  font-size: 0.9rem;
+  .site-footer {
+    @apply border-t border-border py-8 text-[0.9rem] text-muted;
+  }
 }
