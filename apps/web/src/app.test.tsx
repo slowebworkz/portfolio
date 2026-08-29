@@ -24,10 +24,14 @@ describe('app shell', () => {
     expect(await screen.findByTestId('not-found')).toBeInTheDocument();
   });
 
-  it('sets the document title from the route', async () => {
+  it('syncs the document title and canonical link with the route', async () => {
     renderAt('/about');
     await screen.findByRole('main');
+
     expect(document.title).toBe('About · Karsten Huehn');
+    expect(document.querySelector('link[rel="canonical"]')?.getAttribute('href')).toMatch(
+      /\/about$/u,
+    );
   });
 
   it('navigates from the home page to the work index via the primary nav', async () => {
