@@ -1,5 +1,6 @@
 import * as v from 'valibot';
 
+import { EvidenceSchema, type Evidence } from './evidence.ts';
 import { ExperienceSchema, type Experience } from './experience.ts';
 import { ProfileSchema, type Profile } from './profile.ts';
 import { ProjectSchema, type Project } from './project.ts';
@@ -24,6 +25,11 @@ export function parseProfile(input: unknown): Profile {
 /** Parse and validate an unknown value as an `Experience`; throws on failure. */
 export function parseExperience(input: unknown): Experience {
   return v.parse(ExperienceSchema, input);
+}
+
+/** Parse and validate an unknown value as an `Evidence` item; throws on failure. */
+export function parseEvidence(input: unknown): Evidence {
+  return v.parse(EvidenceSchema, input);
 }
 
 /**

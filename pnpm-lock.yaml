@@ -172,7 +172,11 @@ importers:
         specifier: 'catalog:'
         version: 4.1.11(@types/node@26.3.0)(happy-dom@20.11.12)(vite@8.2.2(@types/node@26.3.0)(esbuild@0.28.2)(jiti@2.7.0))
 
-  packages/archive: {}
+  packages/archive:
+    dependencies:
+      '@portfolio/data':
+        specifier: workspace:*
+        version: link:../data
 
   packages/content:
     dependencies:
