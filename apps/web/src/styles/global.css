@@ -12,21 +12,21 @@
     ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
 
-  --color-bg: #ffffff;
-  --color-fg: #1a1a1a;
-  --color-muted: #5a5a5a;
-  --color-accent: #0b5fff;
-  --color-border: #e4e4e7;
+  --color-bg: oklch(100% 0 0);
+  --color-fg: oklch(18% 0 0);
+  --color-muted: oklch(45% 0 0);
+  --color-accent: oklch(52% 0.24 255);
+  --color-border: oklch(91% 0.01 286);
 }
 
 /* Dark mode swaps the token values; utilities read them through `var()`. */
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-bg: #101012;
-    --color-fg: #ececec;
-    --color-muted: #a1a1aa;
-    --color-accent: #6ea8fe;
-    --color-border: #2a2a30;
+    --color-bg: oklch(16% 0.01 285);
+    --color-fg: oklch(94% 0.01 285);
+    --color-muted: oklch(70% 0.02 285);
+    --color-accent: oklch(72% 0.15 255);
+    --color-border: oklch(29% 0.015 285);
   }
 }
 
