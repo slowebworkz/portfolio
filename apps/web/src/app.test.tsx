@@ -1,4 +1,5 @@
 import { render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { describe, expect, it } from 'vitest';
 
@@ -6,7 +7,7 @@ import { routes } from './routes.tsx';
 
 function renderAt(path: string) {
   const router = createMemoryRouter(routes, { initialEntries: [path] });
-  return render(<RouterProvider router={router} />);
+  return { router, ...render(<RouterProvider router={router} />) };
 }
 
 describe('app shell', () => {
@@ -55,6 +56,27 @@ describe('app shell', () => {
     renderAt('/nope');
     expect(
       await screen.findByRole('heading', { level: 1, name: /page not found/i }),
+    ).toBeInTheDocument();
+  });
+
+  it('navigates from the home page to the work index via the primary nav', async () => {
+    const user = userEvent.setup();
+    renderAt('/');
+
+    const nav = screen.getByRole('navigation', { name: /primary/i });
+    await user.click(within(nav).getByRole('link', { name: 'Work' }));
+
+    expect(await screen.findByRole('heading', { level: 1, name: /^work$/i })).toBeInTheDocument();
+  });
+
+  it('navigates from the work index into a project detail page', async () => {
+    const user = userEvent.setup();
+    renderAt('/work');
+
+    await user.click(await screen.findByRole('link', { name: /praxis kit/i }));
+
+    expect(
+      await screen.findByRole('heading', { level: 1, name: /praxis kit/i }),
     ).toBeInTheDocument();
   });
 });
