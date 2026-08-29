@@ -31,7 +31,7 @@ export function ToptalBadge() {
           <StarsSVG />
 
           <h3 className={styles.b}>Top 3% Talent</h3>
-          <div className={styles.c} aria-hidden="true"></div>
+          <div className={styles.c} aria-hidden="true" />
           <span className={styles.d}>Vetted by</span>
 
           <ToptalSVG />
