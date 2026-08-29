@@ -1,0 +1,7 @@
+#!/bin/sh
+# Local stand-in for the old CI workflow: lint, format, typecheck, test, build.
+# Wired via `git config core.hooksPath .githooks` (see README).
+# Skip once with `git push --no-verify`.
+
+echo "pre-push: running pnpm check…"
+pnpm check

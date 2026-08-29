@@ -84,10 +84,18 @@ pnpm preview          # serve the production build
 
 ## CI
 
-`.github/workflows/ci.yml` checks out the repo, enables pnpm, sets up Node from
-`.nvmrc`, installs with the frozen lockfile, and runs lint, format check,
-typecheck, tests, and build. It is written to stay useful as packages are
-added: the aggregate scripts fan out across the workspace.
+There is no CI workflow. On a private repo it spent GitHub Actions minutes
+re-running the same checks on every PR sync and again after merge, which is not
+worth it for a solo project. Instead, verification runs locally on `git push`:
+
+```sh
+git config core.hooksPath .githooks   # one-time, per clone
+```
+
+`.githooks/pre-push` runs `pnpm check` (lint, format check, typecheck, tests,
+build). Skip it once with `git push --no-verify`. The `deploy.yml` build on
+`main` still fails loudly if a broken build reaches it; the live site keeps
+serving the last good deploy.
 
 `.github/workflows/deploy.yml` runs on push to `main`: it builds the
 prerendered site and publishes `apps/web/dist` to **GitHub Pages**. It needs

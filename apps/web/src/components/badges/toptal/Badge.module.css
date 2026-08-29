@@ -1,0 +1,105 @@
+/* Pulls in the @theme tokens, custom @utility rules, and utility definitions
+   from the app's main stylesheet so @apply works here. `@reference` only reads
+   them — it emits no CSS — so nothing is duplicated in the bundle. */
+@reference '../../../styles/global.css';
+
+.h {
+  --h: polygon(50% 0, 100% 24%, 100% 76%, 50% 100%, 0 76%, 0 24%);
+  --outer-bg: oklch(0.6996 0.1474 238.83); /* #25a9ef */
+  --text-color: oklch(42.83% 0.1929 261.52); /* #204ecf */
+  --white-color: oklch(100% 0 0); /* #fff */
+  --gradient-color: oklch(78% 0.18 220.5); /* #00c3ff */
+  --shadow-color: oklch(27.03% 0.1206 264.05 / 35%); /* rgba(6,30,96,.35) */
+  --fill-color: oklch(76.46%_0.1514_229.43); /* #00c3ff */
+  --fill2-color: oklch(25.07%_0.0277_263.21); /* #262d3d */
+  --link-color: oklch(55.45% 0.2492 263.69); /* #296bff */
+
+  @apply inline-block bg-(--outer-bg) p-1.5;
+  @apply [clip-path:var(--h)];
+}
+
+.a {
+  --gradient-stop: 30%;
+  --gradient-bg: var(--white-color);
+
+  --gradient-1: radial-gradient(
+    circle at 20% -10%,
+    var(--gradient-color) -80%,
+    var(--gradient-bg) var(--gradient-stop)
+  );
+
+  --gradient-2: radial-gradient(
+    circle at -20% 20%,
+    var(--gradient-color) -80%,
+    var(--gradient-bg) var(--gradient-stop)
+  );
+
+  --gradient-3: radial-gradient(
+    circle at 70% 100%,
+    var(--gradient-color) -80%,
+    var(--gradient-bg) var(--gradient-stop)
+  );
+
+  --gradient-4: radial-gradient(
+    circle at 120% 80%,
+    var(--gradient-color) -80%,
+    var(--gradient-bg) var(--gradient-stop)
+  );
+
+  @apply flex flex-col items-center gap-2;
+  @apply w-50;
+  @apply py-6 pb-10;
+  @apply text-center text-(--text-color);
+  @apply [background:var(--gradient-1),var(--gradient-2),var(--gradient-3),var(--gradient-4)];
+  @apply bg-blend-multiply;
+  @apply [clip-path:var(--h)];
+  @apply shadow-[0_28px_50px_var(--shadow-color)];
+}
+
+.s {
+  @apply w-16;
+}
+
+.s path {
+  @apply fill-(--fill-color);
+}
+
+#r {
+  font-family: proxima-nova, Arial, sans-serif;
+}
+
+.b {
+  @apply m-0 text-[19px] font-bold leading-none uppercase;
+}
+
+.c {
+  @apply w-30 h-px bg-(--outer-bg);
+}
+
+.d {
+  @apply text-[16px] -mb-1.5;
+}
+
+.d + svg {
+  @apply w-25;
+}
+
+.d + svg > path {
+  @apply [fill-rule:evenodd] [clip-rule:evenodd];
+}
+
+.d + svg > path:nth-child(1) {
+  @apply fill-(--text-color);
+}
+
+.d + svg > path:nth-child(2) {
+  @apply fill-(--fill2-color);
+}
+
+.f {
+  @apply inline-flex items-center justify-center;
+  @apply px-5 py-1 rounded-md;
+  @apply bg-(--link-color) text-(--white-color);
+  @apply text-base font-medium;
+  @apply decoration-[.5px] underline-offset-2;
+}

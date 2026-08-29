@@ -1,6 +1,13 @@
-:root {
-  color-scheme: light dark;
+/* Tailwind v4, utilities only. Preflight (the base reset) is intentionally not
+   imported yet — the rest of the app still relies on user-agent element styles.
+   It gets turned on with the full design-system pass. */
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
 
+/* Design tokens — the source of truth. `@theme` emits these as `:root` custom
+   properties and generates the matching utilities (`bg-bg`, `text-muted`, …). */
+@theme {
   --font-sans:
     ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
@@ -10,11 +17,9 @@
   --color-muted: #5a5a5a;
   --color-accent: #0b5fff;
   --color-border: #e4e4e7;
-
-  --measure: 68ch;
-  --space: 1rem;
 }
 
+/* Dark mode swaps the token values; utilities read them through `var()`. */
 @media (prefers-color-scheme: dark) {
   :root {
     --color-bg: #101012;
@@ -23,6 +28,18 @@
     --color-accent: #6ea8fe;
     --color-border: #2a2a30;
   }
+}
+
+:root {
+  color-scheme: light dark;
+
+  --measure: 68ch;
+  --space: 1rem;
+}
+
+/* Hexagon mask shared by the Toptal badge's frame and inner face. */
+@utility hex-clip {
+  clip-path: polygon(50% 0, 100% 24%, 100% 76%, 50% 100%, 0 76%, 0 24%);
 }
 
 *,
