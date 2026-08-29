@@ -20,7 +20,7 @@ export function RootLayout() {
         Skip to content
       </a>
       <header className="site-header">
-        <div className="container site-header__inner">
+        <div className="site-container site-header__inner">
           <NavLink to="/" className="site-header__mark" end>
             Portfolio
           </NavLink>
@@ -38,12 +38,12 @@ export function RootLayout() {
         </div>
       </header>
 
-      <main id="main" className="site-main container">
+      <main id="main" className="site-main site-container">
         <Outlet />
       </main>
 
       <footer className="site-footer">
-        <div className="container">
+        <div className="site-container">
           <ul className="site-nav">
             {profile.links.map((link) => (
               <li key={link.url}>
