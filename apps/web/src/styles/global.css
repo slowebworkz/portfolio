@@ -190,12 +190,14 @@
     @apply my-4 grid gap-2;
   }
 
+  /* Label above value on narrow screens; two columns once there's room, so a
+     long value wraps in its own column instead of shoving the layout. */
   .detail-meta div {
-    @apply flex gap-2;
+    @apply grid grid-cols-1 gap-x-2 sm:grid-cols-[8rem_1fr];
   }
 
   .detail-meta dt {
-    @apply min-w-32 font-bold;
+    @apply font-bold;
   }
 
   .detail-meta dd {
