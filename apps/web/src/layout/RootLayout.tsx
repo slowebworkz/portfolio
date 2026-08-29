@@ -5,10 +5,10 @@ import { useDocumentHead } from '../useDocumentHead.ts';
 
 const NAV = [
   { to: '/', label: 'Home', end: true },
-  { to: '/work', label: 'Work', end: false },
-  { to: '/about', label: 'About', end: false },
-  { to: '/writing', label: 'Writing', end: false },
-  { to: '/contact', label: 'Contact', end: false },
+  { to: '/work', label: 'Work' },
+  { to: '/about', label: 'About' },
+  { to: '/writing', label: 'Writing' },
+  { to: '/contact', label: 'Contact' },
 ];
 
 export function RootLayout() {
@@ -28,7 +28,7 @@ export function RootLayout() {
             <ul className="site-nav">
               {NAV.map((item) => (
                 <li key={item.to}>
-                  <NavLink to={item.to} end={item.end}>
+                  <NavLink to={item.to} end={item.end ?? false}>
                     {item.label}
                   </NavLink>
                 </li>
