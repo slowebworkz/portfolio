@@ -1,8 +1,8 @@
-/* Tailwind v4, utilities only. Preflight (the base reset) is intentionally not
-   imported yet — the rest of the app still relies on user-agent element styles.
-   It gets turned on with the full design-system pass. */
+/* Tailwind v4. Preflight is on; the base typography below re-establishes the
+   document rhythm it strips, and the component classes are the site chrome. */
 @layer theme, base, components, utilities;
 @import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/preflight.css' layer(base);
 @import 'tailwindcss/utilities.css' layer(utilities);
 
 /* Design tokens — the source of truth. `@theme` emits these as `:root` custom
@@ -42,178 +42,222 @@
   clip-path: polygon(50% 0, 100% 24%, 100% 76%, 50% 100%, 0 76%, 0 24%);
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    color: var(--color-fg);
+    background: var(--color-bg);
+  }
 
-body {
-  margin: 0;
-  font-family: var(--font-sans);
-  line-height: 1.6;
-  color: var(--color-fg);
-  background: var(--color-bg);
-}
+  h1,
+  h2,
+  h3 {
+    font-weight: 700;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
 
-a {
-  color: var(--color-accent);
-}
+  h1 {
+    font-size: 2rem;
+    margin-block: 0 0.75rem;
+  }
 
-code {
-  font-family: var(--font-mono);
-  font-size: 0.9em;
-}
+  h2 {
+    font-size: 1.5rem;
+    margin-block: 2rem 0.5rem;
+  }
 
-:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-}
+  h3 {
+    font-size: 1.15rem;
+    margin-block: 1.5rem 0.25rem;
+  }
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+  p {
+    margin-block: 0 0.75rem;
+  }
+
+  a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  /* Content lists get their markers back — zero-specificity so `.card-list`
+     and `.site-nav` (which opt out) still win. `<ol>` stays numbered. */
+  .site-main :where(ul) {
+    list-style: disc;
+  }
+
+  .site-main :where(ol) {
+    list-style: decimal;
+  }
+
+  .site-main :where(ul, ol) {
+    margin-block: 0 var(--space);
+    padding-left: 1.5rem;
+  }
+
+  .site-main :where(li) {
+    margin-block: 0.25rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
-.container {
-  width: 100%;
-  max-width: 60rem;
-  margin-inline: auto;
-  padding-inline: var(--space);
-}
+@layer components {
+  .container {
+    width: 100%;
+    max-width: 60rem;
+    margin-inline: auto;
+    padding-inline: var(--space);
+  }
 
-.skip-link {
-  position: absolute;
-  left: -9999px;
-  top: 0;
-  padding: 0.5rem 1rem;
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
-}
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    padding: 0.5rem 1rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+  }
 
-.skip-link:focus {
-  left: 0.5rem;
-  top: 0.5rem;
-  z-index: 10;
-}
+  .skip-link:focus {
+    left: 0.5rem;
+    top: 0.5rem;
+    z-index: 10;
+  }
 
-.site-header {
-  border-bottom: 1px solid var(--color-border);
-}
+  .site-header {
+    border-bottom: 1px solid var(--color-border);
+  }
 
-.site-header__inner {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space);
-  align-items: center;
-  justify-content: space-between;
-  padding-block: var(--space);
-}
+  .site-header__inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space);
+    align-items: center;
+    justify-content: space-between;
+    padding-block: var(--space);
+  }
 
-.site-header__mark {
-  font-weight: 700;
-  text-decoration: none;
-}
+  .site-header__mark {
+    font-weight: 700;
+    text-decoration: none;
+  }
 
-.site-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
+  .site-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
 
-.site-nav a[aria-current='page'] {
-  font-weight: 700;
-  text-decoration: underline;
-}
+  .site-nav a[aria-current='page'] {
+    font-weight: 700;
+  }
 
-.site-main {
-  padding-block: calc(var(--space) * 2);
-}
+  .site-main {
+    padding-block: calc(var(--space) * 2);
+  }
 
-.site-main :is(p, li) {
-  max-width: var(--measure);
-}
+  .site-main :is(p, li) {
+    max-width: var(--measure);
+  }
 
-.lede {
-  font-size: 1.15rem;
-  color: var(--color-muted);
-}
+  .lede {
+    font-size: 1.15rem;
+    color: var(--color-muted);
+  }
 
-.meta,
-.tag {
-  color: var(--color-muted);
-  font-size: 0.9rem;
-}
+  .meta,
+  .tag {
+    color: var(--color-muted);
+    font-size: 0.9rem;
+  }
 
-.tag {
-  border: 1px solid var(--color-border);
-  border-radius: 0.25rem;
-  padding: 0 0.35rem;
-}
+  .tag {
+    border: 1px solid var(--color-border);
+    border-radius: 0.25rem;
+    padding: 0 0.35rem;
+  }
 
-.card-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: calc(var(--space) * 1.5);
-}
+  .card-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: calc(var(--space) * 1.5);
+  }
 
-.detail-meta {
-  display: grid;
-  gap: 0.5rem;
-  margin-block: var(--space);
-}
+  .detail-meta {
+    display: grid;
+    gap: 0.5rem;
+    margin-block: var(--space);
+  }
 
-.detail-meta div {
-  display: flex;
-  gap: 0.5rem;
-}
+  .detail-meta div {
+    display: flex;
+    gap: 0.5rem;
+  }
 
-.detail-meta dt {
-  font-weight: 700;
-  min-width: 8rem;
-}
+  .detail-meta dt {
+    font-weight: 700;
+    min-width: 8rem;
+  }
 
-.detail-meta dd {
-  margin: 0;
-}
+  .detail-meta dd {
+    margin: 0;
+  }
 
-.timeline {
-  display: grid;
-  gap: calc(var(--space) * 1.5);
-  padding-left: 1.25rem;
-}
+  .timeline {
+    display: grid;
+    gap: calc(var(--space) * 1.5);
+    padding-left: 1.25rem;
+  }
 
-.timeline__head {
-  margin-bottom: 0.25rem;
-}
+  .timeline__head {
+    margin-bottom: 0.25rem;
+  }
 
-.lineage {
-  display: grid;
-  gap: var(--space);
-  padding-left: 1.25rem;
-}
+  .lineage {
+    display: grid;
+    gap: var(--space);
+    padding-left: 1.25rem;
+  }
 
-.lineage .tag {
-  margin-left: 0.5rem;
-}
+  .lineage .tag {
+    margin-left: 0.5rem;
+  }
 
-.lineage p {
-  margin: 0.25rem 0 0;
-}
+  .lineage p {
+    margin: 0.25rem 0 0;
+  }
 
-.site-footer {
-  border-top: 1px solid var(--color-border);
-  padding-block: calc(var(--space) * 2);
-  color: var(--color-muted);
-  font-size: 0.9rem;
+  .site-footer {
+    border-top: 1px solid var(--color-border);
+    padding-block: calc(var(--space) * 2);
+    color: var(--color-muted);
+    font-size: 0.9rem;
+  }
 }
