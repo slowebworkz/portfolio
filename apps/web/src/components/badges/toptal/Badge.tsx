@@ -25,7 +25,7 @@ function ToptalSVG() {
 
 export function ToptalBadge() {
   return (
-    <div id="r" style={{ fontFamily: 'proxima-nova, Arial, sans-serif' }}>
+    <aside className={styles.root} aria-label="Toptal Top 3% Talent credential">
       <div className={styles.h}>
         <div className={styles.a}>
           <StarsSVG />
@@ -41,6 +41,6 @@ export function ToptalBadge() {
           </a>
         </div>
       </div>
-    </div>
+    </aside>
   );
 }
