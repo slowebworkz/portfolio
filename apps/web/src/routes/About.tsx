@@ -1,7 +1,7 @@
 import { experience, profile } from '@portfolio/content';
 import { Link } from 'react-router';
 
-import { ToptalBadge } from '../components/ToptalBadge.tsx';
+import { ToptalBadge } from '../components/badges/toptal/Badge.tsx';
 import { formatPeriod } from '../format/period.ts';
 
 export function About() {

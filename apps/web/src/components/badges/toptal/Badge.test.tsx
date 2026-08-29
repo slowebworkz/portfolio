@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
-import { ToptalBadge } from './ToptalBadge.tsx';
+import { ToptalBadge } from './Badge.tsx';
 
 describe('ToptalBadge', () => {
   it('shows the rank and links to the résumé', () => {
