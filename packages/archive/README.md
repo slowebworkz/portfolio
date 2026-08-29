@@ -18,6 +18,9 @@ pnpm archive discover ap-logic.com --from 2012 --to 2014 --mime text/html
 
 # Download the raw HTML of each capture (.archive/<host>/captures/<timestamp>.html)
 pnpm archive fetch ap-logic.com --delay-ms 1500
+
+# Static-analyse the downloaded captures (.archive/<host>/inspect.json)
+pnpm archive inspect ap-logic.com
 ```
 
 `discover` flags: `--from` / `--to` (`YYYY`, `YYYYMM`, `YYYYMMDD`), `--limit`,
@@ -32,7 +35,10 @@ Output goes to a git-ignored `.archive/` directory.
 
 `discover(url, options)` → `Capture[]`, `fetchCapture(timestamp, url)` → HTML
 string, `toEvidenceDraft(capture)` → a `WaybackEvidence` draft (`@portfolio/data`
-shape, `confidence: 'inferred'`, placeholder `id`/`label` to edit before use).
+shape, `confidence: 'inferred'`, placeholder `id`/`label` to edit before use),
+`analyzeHtml(html)` → `PageAnalysis` (doctype, lang, generator, viewport,
+IE-conditional-comment count, external scripts / stylesheets with a best-guess
+library name + version, inline script/style counts).
 
 ## Boundary
 

@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 import { existsSync } from 'node:fs';
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
+import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
+import { basename, join } from 'node:path';
 import { parseArgs } from 'node:util';
 
 import { discover, type Capture, type CdxMatchType, type DiscoverOptions } from './cdx.ts';
+import { analyzeHtml } from './inspect.ts';
 import { fetchCapture, toEvidenceDraft } from './wayback.ts';
 
 const OUT_ROOT = '.archive';
@@ -142,6 +143,39 @@ async function runFetch(argv: string[]): Promise<void> {
   console.log(`\n${downloaded} downloaded, ${skipped} already present, in ${capturesDir}/`);
 }
 
+async function runInspect(argv: string[]): Promise<void> {
+  const { positionals } = parseArgs({ args: argv, allowPositionals: true });
+  const target = positionals[0];
+  if (!target) throw new Error('usage: archive inspect <url>');
+
+  const capturesDir = join(OUT_ROOT, slugForTarget(target), 'captures');
+  if (!existsSync(capturesDir)) {
+    throw new Error(`no ${capturesDir} — run "archive fetch ${target}" first`);
+  }
+
+  const files = (await readdir(capturesDir)).filter((name) => name.endsWith('.html')).sort();
+  if (files.length === 0) throw new Error(`no captures downloaded in ${capturesDir}`);
+
+  const analyses = [];
+  for (const file of files) {
+    const timestamp = basename(file, '.html');
+    const html = await readFile(join(capturesDir, file), 'utf8');
+    const analysis = analyzeHtml(html);
+    analyses.push({ timestamp, ...analysis });
+
+    const libs = analysis.externalScripts
+      .filter((script) => script.name)
+      .map((script) => (script.version ? `${script.name} ${script.version}` : script.name));
+    console.log(
+      `  ${timestamp}  ${(analysis.htmlBytes / 1024).toFixed(1).padStart(6)} KB  ${analysis.stylesheets.length} css  ${libs.join(', ') || '—'}`,
+    );
+  }
+
+  const outFile = join(OUT_ROOT, slugForTarget(target), 'inspect.json');
+  await writeFile(outFile, `${JSON.stringify(analyses, null, 2)}\n`);
+  console.log(`\nwrote ${outFile}`);
+}
+
 async function main(): Promise<void> {
   const [command, ...rest] = process.argv.slice(2);
   switch (command) {
@@ -151,8 +185,11 @@ async function main(): Promise<void> {
     case 'fetch':
       await runFetch(rest);
       break;
+    case 'inspect':
+      await runInspect(rest);
+      break;
     default:
-      console.error('usage: archive <discover|fetch> <url> [options]');
+      console.error('usage: archive <discover|fetch|inspect> <url> [options]');
       process.exitCode = 1;
   }
 }

@@ -13,3 +13,10 @@ export {
   rawCaptureUrl,
   type FetchCaptureOptions,
 } from './wayback.ts';
+export {
+  analyzeHtml,
+  detectLibrary,
+  countConditionalComments,
+  type PageAnalysis,
+  type DetectedLibrary,
+} from './inspect.ts';
