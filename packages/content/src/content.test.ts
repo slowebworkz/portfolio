@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { experience } from './experience.ts';
-import { profile } from './profile.ts';
+import { profile, resumeUrl } from './profile.ts';
 import { getProject } from './projects/index.ts';
 
 describe('profile', () => {
@@ -10,6 +10,12 @@ describe('profile', () => {
     expect(profile.tagline).toBeTruthy();
     expect(profile.bio.length).toBeGreaterThan(20);
     expect(profile.links.length).toBeGreaterThan(0);
+  });
+
+  it('exposes resumeUrl from the { kind: "resume" } link', () => {
+    const resume = profile.links.find((link) => link.kind === 'resume');
+    expect(resume).toBeDefined();
+    expect(resumeUrl).toBe(resume?.url);
   });
 });
 

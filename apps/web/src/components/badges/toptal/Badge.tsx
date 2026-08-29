@@ -1,9 +1,5 @@
-import { profile } from '@portfolio/content';
+import { resumeUrl } from '@portfolio/content';
 import styles from './Badge.module.css';
-
-const RESUME_URL =
-  profile.links.find((link) => link.kind === 'resume')?.url ??
-  'https://www.toptal.com/developers/resume/karsten-huehn#q1jy1g';
 
 function StarsSVG() {
   return (
@@ -40,7 +36,7 @@ export function ToptalBadge() {
 
           <ToptalSVG />
 
-          <a className={styles.f} href={RESUME_URL} target="_blank" rel="noopener noreferrer">
+          <a className={styles.f} href={resumeUrl} target="_blank" rel="noopener noreferrer">
             Hire me
           </a>
         </div>

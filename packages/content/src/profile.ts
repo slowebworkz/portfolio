@@ -24,3 +24,11 @@ export const profile: Profile = parseProfile({
     },
   ],
 });
+
+const resume = profile.links.find((link) => link.kind === 'resume');
+if (!resume) {
+  throw new Error('@portfolio/content: profile.links must include a { kind: "resume" } link.');
+}
+
+/** The résumé URL. Guaranteed present at load — the Toptal badge links to it. */
+export const resumeUrl: string = resume.url;
