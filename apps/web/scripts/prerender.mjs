@@ -10,7 +10,9 @@ const base = process.env.SITE_BASE ?? '/';
 const origin = (process.env.SITE_ORIGIN ?? '').replace(/\/$/u, '');
 
 const template = await readFile(join(clientDir, 'index.html'), 'utf8');
-const { render, routePaths, metaForPath } = await import(pathToFileURL(serverEntry).href);
+const { render, routePaths, metaForPath, canonicalUrl } = await import(
+  pathToFileURL(serverEntry).href
+);
 
 if (!template.includes('<div id="root"></div>')) {
   throw new Error('prerender: could not find <div id="root"></div> in dist/index.html');
@@ -34,8 +36,8 @@ function applyHead(html, path, meta) {
     `<meta property="og:description" content="${description}" />`,
     `<meta name="twitter:card" content="summary" />`,
   ];
-  if (origin) {
-    const url = `${origin}${base}${path === '/' ? '' : path.replace(/^\//u, '')}`;
+  const url = canonicalUrl(path, origin, base);
+  if (url) {
     head.push(`<link rel="canonical" href="${url}" />`);
     head.push(`<meta property="og:url" content="${url}" />`);
   }

@@ -3,6 +3,10 @@
    them — it emits no CSS — so nothing is duplicated in the bundle. */
 @reference '../../../styles/global.css';
 
+.root {
+  font-family: proxima-nova, Arial, sans-serif;
+}
+
 .h {
   --h: polygon(50% 0, 100% 24%, 100% 76%, 50% 100%, 0 76%, 0 24%);
   --outer-bg: oklch(0.6996 0.1474 238.83); /* #25a9ef */
@@ -62,10 +66,6 @@
 
 .s path {
   @apply fill-(--fill-color);
-}
-
-#r {
-  font-family: proxima-nova, Arial, sans-serif;
 }
 
 .b {

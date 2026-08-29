@@ -48,3 +48,13 @@ export function metaForPath(pathname: string): PageMeta {
   }
   return { title: withSite('Page not found'), description: 'This page does not exist.' };
 }
+
+/** Absolute URL for a route, used for `<link rel="canonical">` and `og:url`.
+ *  Returns `''` when no origin is configured (local builds) — callers skip the
+ *  tags entirely. Framework-neutral: the prerender step passes `SITE_ORIGIN` /
+ *  `SITE_BASE`; the client passes `location.origin` / `import.meta.env.BASE_URL`. */
+export function canonicalUrl(pathname: string, origin: string, base = '/'): string {
+  if (!origin) return '';
+  const path = pathname === '/' ? '' : pathname.replace(/^\//u, '');
+  return `${origin.replace(/\/+$/u, '')}${base}${path}`;
+}

@@ -1,9 +1,5 @@
-import { profile } from '@portfolio/content';
+import { resumeUrl } from '@portfolio/content';
 import styles from './Badge.module.css';
-
-const RESUME_URL =
-  profile.links.find((link) => link.kind === 'resume')?.url ??
-  'https://www.toptal.com/developers/resume/karsten-huehn#q1jy1g';
 
 function StarsSVG() {
   return (
@@ -29,22 +25,22 @@ function ToptalSVG() {
 
 export function ToptalBadge() {
   return (
-    <div id="r" style={{ fontFamily: 'proxima-nova, Arial, sans-serif' }}>
+    <aside className={styles.root} aria-label="Toptal Top 3% Talent credential">
       <div className={styles.h}>
         <div className={styles.a}>
           <StarsSVG />
 
           <h3 className={styles.b}>Top 3% Talent</h3>
-          <div className={styles.c} aria-hidden="true"></div>
+          <div className={styles.c} aria-hidden="true" />
           <span className={styles.d}>Vetted by</span>
 
           <ToptalSVG />
 
-          <a className={styles.f} href={RESUME_URL} target="_blank" rel="noopener noreferrer">
+          <a className={styles.f} href={resumeUrl} target="_blank" rel="noopener noreferrer">
             Hire me
           </a>
         </div>
       </div>
-    </div>
+    </aside>
   );
 }

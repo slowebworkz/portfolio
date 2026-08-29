@@ -1,7 +1,7 @@
 import { projects } from '@portfolio/content';
 import { describe, expect, it } from 'vitest';
 
-import { metaForPath } from './meta.ts';
+import { canonicalUrl, metaForPath } from './meta.ts';
 
 describe('metaForPath', () => {
   it('gives the home page a name-first title', () => {
@@ -34,5 +34,25 @@ describe('metaForPath', () => {
     for (const path of ['/', '/work', '/about', '/writing', '/contact', '/nope']) {
       expect(metaForPath(path).description.length).toBeGreaterThan(0);
     }
+  });
+});
+
+describe('canonicalUrl', () => {
+  it('is empty when no origin is configured', () => {
+    expect(canonicalUrl('/work', '')).toBe('');
+  });
+
+  it('joins origin, base, and path', () => {
+    expect(canonicalUrl('/work', 'https://example.com')).toBe('https://example.com/work');
+    expect(canonicalUrl('/work/praxis-kit', 'https://example.com', '/portfolio/')).toBe(
+      'https://example.com/portfolio/work/praxis-kit',
+    );
+  });
+
+  it('maps the root path to the base itself', () => {
+    expect(canonicalUrl('/', 'https://example.com/', '/portfolio/')).toBe(
+      'https://example.com/portfolio/',
+    );
+    expect(canonicalUrl('/', 'https://example.com')).toBe('https://example.com/');
   });
 });
