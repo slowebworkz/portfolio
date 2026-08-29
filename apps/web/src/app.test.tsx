@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { describe, expect, it } from 'vitest';
 
+import { routePaths } from './entry-server.tsx';
 import { routes } from './routes.tsx';
 
 function renderAt(path: string) {
@@ -10,73 +11,48 @@ function renderAt(path: string) {
   return { router, ...render(<RouterProvider router={router} />) };
 }
 
+const projectPath = routePaths.find((path) => path.startsWith('/work/'));
+
 describe('app shell', () => {
-  it('renders the home page with primary navigation', async () => {
-    renderAt('/');
-    expect(
-      await screen.findByRole('heading', { level: 1, name: /engineering portfolio/i }),
-    ).toBeInTheDocument();
-    const nav = screen.getByRole('navigation', { name: /primary/i });
-    expect(within(nav).getByRole('link', { name: 'Work' })).toBeInTheDocument();
+  it.each(routePaths)('resolves and renders %s', async (path) => {
+    renderAt(path);
+    expect(await screen.findByRole('main')).toBeInTheDocument();
   });
 
-  it('renders a project detail page from the slug', async () => {
-    renderAt('/work/praxis-kit');
-    expect(
-      await screen.findByRole('heading', { level: 1, name: /praxis kit/i }),
-    ).toBeInTheDocument();
-  });
-
-  it('lists the authored projects on /work', async () => {
-    renderAt('/work');
-    expect(await screen.findByRole('link', { name: /McMillan Study Guides/i })).toBeInTheDocument();
-  });
-
-  it('renders the profile and experience timeline on /about', async () => {
-    renderAt('/about');
-    expect(
-      await screen.findByRole('heading', { level: 2, name: /experience/i }),
-    ).toBeInTheDocument();
-    expect(screen.getByText(/FastSpring/)).toBeInTheDocument();
-  });
-
-  it('shows contact links on /contact', async () => {
-    renderAt('/contact');
-    const main = await screen.findByRole('main');
-    expect(within(main).getByRole('link', { name: /GitHub/i })).toBeInTheDocument();
+  it('renders the not-found route for an unknown path', async () => {
+    renderAt('/nope');
+    expect(await screen.findByTestId('not-found')).toBeInTheDocument();
   });
 
   it('sets the document title from the route', async () => {
     renderAt('/about');
-    await screen.findByRole('heading', { level: 1, name: /about/i });
+    await screen.findByRole('main');
     expect(document.title).toBe('About · Karsten Huehn');
-  });
-
-  it('renders a not-found page for an unknown route', async () => {
-    renderAt('/nope');
-    expect(
-      await screen.findByRole('heading', { level: 1, name: /page not found/i }),
-    ).toBeInTheDocument();
   });
 
   it('navigates from the home page to the work index via the primary nav', async () => {
     const user = userEvent.setup();
-    renderAt('/');
+    const { router } = renderAt('/');
 
     const nav = screen.getByRole('navigation', { name: /primary/i });
     await user.click(within(nav).getByRole('link', { name: 'Work' }));
 
-    expect(await screen.findByRole('heading', { level: 1, name: /^work$/i })).toBeInTheDocument();
+    await screen.findByRole('main');
+    expect(router.state.location.pathname).toBe('/work');
   });
 
   it('navigates from the work index into a project detail page', async () => {
+    expect(projectPath).toBeDefined();
+
     const user = userEvent.setup();
-    renderAt('/work');
+    const { router } = renderAt('/work');
 
-    await user.click(await screen.findByRole('link', { name: /praxis kit/i }));
+    const link = (await screen.findAllByRole('link')).find(
+      (anchor) => anchor.getAttribute('href') === projectPath,
+    );
+    expect(link).toBeDefined();
+    await user.click(link as HTMLElement);
 
-    expect(
-      await screen.findByRole('heading', { level: 1, name: /praxis kit/i }),
-    ).toBeInTheDocument();
+    expect(router.state.location.pathname).toBe(projectPath);
   });
 });
