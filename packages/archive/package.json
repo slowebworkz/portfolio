@@ -16,6 +16,7 @@
     "clean": "tsc --build --clean && rm -rf dist"
   },
   "dependencies": {
-    "@portfolio/data": "workspace:*"
+    "@portfolio/data": "workspace:*",
+    "node-html-parser": "catalog:"
   }
 }
