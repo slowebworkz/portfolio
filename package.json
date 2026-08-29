@@ -12,6 +12,7 @@
   "scripts": {
     "dev": "pnpm --filter @portfolio/web dev",
     "dev:kill": "node scripts/kill-dev-server.mjs",
+    "archive": "node packages/archive/src/cli.ts",
     "build": "pnpm -r --if-present build",
     "preview": "pnpm --filter @portfolio/web preview",
     "typecheck": "pnpm -r --if-present typecheck",

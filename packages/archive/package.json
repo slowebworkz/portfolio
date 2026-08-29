@@ -3,9 +3,19 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Node/TypeScript tooling for researching historical websites (Internet Archive Wayback/CDX). Not implemented yet.",
+  "description": "Node/TypeScript tooling for researching historical websites via the Internet Archive Wayback Machine (CDX API). The archive is evidence, not a licence to republish.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "bin": {
+    "portfolio-archive": "./src/cli.ts"
+  },
   "scripts": {
+    "archive": "node src/cli.ts",
     "typecheck": "tsc --build",
     "clean": "tsc --build --clean && rm -rf dist"
+  },
+  "dependencies": {
+    "@portfolio/data": "workspace:*"
   }
 }
