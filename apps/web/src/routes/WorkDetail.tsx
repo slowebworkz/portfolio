@@ -1,6 +1,7 @@
 import { getProject } from '@portfolio/content';
 import { Link, useParams } from 'react-router';
 
+import { CaseStudy } from '../components/CaseStudy.tsx';
 import { formatPeriod } from '../format/period.ts';
 
 export function WorkDetail() {
@@ -47,6 +48,19 @@ export function WorkDetail() {
         </div>
       </dl>
 
+      {project.package && (
+        <p className="meta">
+          <code>{project.package.name}</code> v{project.package.version} · {project.package.license}
+          {project.package.downloads?.weekly != null && (
+            <>
+              {' · '}
+              {project.package.downloads.weekly.toLocaleString()} downloads/week
+              {project.package.downloads.asOf && ` (as of ${project.package.downloads.asOf})`}
+            </>
+          )}
+        </p>
+      )}
+
       {project.motivation && (
         <section aria-labelledby="why-heading">
           <h2 id="why-heading">Why</h2>
@@ -74,6 +88,8 @@ export function WorkDetail() {
           )}
         </section>
       )}
+
+      {project.caseStudy && <CaseStudy study={project.caseStudy} />}
 
       {project.lineage && project.lineage.length > 0 && (
         <section aria-labelledby="lineage-heading">
