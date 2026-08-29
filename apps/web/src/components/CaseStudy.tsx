@@ -9,6 +9,8 @@ export function CaseStudy({ study }: { study: CaseStudyData }) {
   return (
     <section aria-labelledby="case-study-heading">
       <h2 id="case-study-heading">Case study</h2>
+      {/* summary and goals items are short structural strings, rendered plain;
+          every prose field below goes through <Markdown>. */}
       <p className="lede">{study.summary}</p>
 
       {study.context && (
@@ -29,8 +31,8 @@ export function CaseStudy({ study }: { study: CaseStudyData }) {
         <>
           <h3>Goals</h3>
           <ul>
-            {study.goals.map((goal) => (
-              <li key={goal}>{goal}</li>
+            {study.goals.map((goal, index) => (
+              <li key={index}>{goal}</li>
             ))}
           </ul>
         </>
@@ -47,15 +49,15 @@ export function CaseStudy({ study }: { study: CaseStudyData }) {
         <>
           <h3>Key decisions</h3>
           <ol className="decisions">
-            {study.keyDecisions.map((item) => (
-              <li key={item.decision}>
+            {study.keyDecisions.map((item, index) => (
+              <li key={index}>
                 <p className="decisions__head">
                   <strong>{item.decision}</strong>
                 </p>
                 <Markdown>{item.rationale}</Markdown>
                 {item.tradeoffs && (
                   <p className="meta">
-                    <strong>Trade-offs:</strong> {item.tradeoffs}
+                    <strong>Trade-offs:</strong> <Markdown inline>{item.tradeoffs}</Markdown>
                   </p>
                 )}
               </li>

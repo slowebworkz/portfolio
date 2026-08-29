@@ -12,7 +12,7 @@ const full: CaseStudyData = {
     {
       decision: 'Chose approach A',
       rationale: 'Because it `works`.',
-      tradeoffs: 'Costs more at build time.',
+      tradeoffs: 'Costs more at `build` time.',
     },
   ],
   whatIdChange: 'Ship a smaller default.',
@@ -34,7 +34,11 @@ describe('CaseStudy', () => {
 
     expect(screen.getByText('Chose approach A')).toBeInTheDocument();
     expect(screen.getByText(/Trade-offs:/)).toBeInTheDocument();
-    expect(screen.getByText(/Costs more at build time/)).toBeInTheDocument();
+    // trade-offs go through <Markdown inline> — the backticked word is a <code>,
+    // and it stays inside the <p> (no paragraph wrapper).
+    const code = screen.getByText('build', { selector: 'code' });
+    expect(code).toBeInTheDocument();
+    expect(code.closest('p')).toHaveClass('meta');
   });
 
   it('renders Markdown emphasis and code from prose fields', () => {
