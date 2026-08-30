@@ -19,7 +19,7 @@ describe('WorkDetail', () => {
   });
 
   it('renders no case study section for a project without one', async () => {
-    renderAt('/work/ap-logic-redesign');
+    renderAt('/work/mcmillan-study-guides-redesign');
 
     await screen.findByRole('heading', { level: 1 });
     expect(screen.queryByRole('heading', { name: /case study/i })).not.toBeInTheDocument();
