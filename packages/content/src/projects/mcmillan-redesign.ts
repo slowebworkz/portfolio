@@ -128,6 +128,85 @@ export const mcmillanRedesign: Project = parseProject({
     notes:
       'No remembered NDA on the public redesign. Later internal client-software work at McMillan is separately NDA-bound and is not included here.',
   },
-  caseStudy: null,
+  caseStudy: {
+    summary:
+      'A phased front-end modernization of McMillan’s live study-guide storefront over 2016–17 — sole developer, on the existing CakePHP application, page by page, with no rewrite and no downtime. Library upgrades (jQuery, jQuery UI, a carousel swap), responsive images, and a stylesheet architecture that isolated one sales portal from another.',
+
+    context: `McMillan Study Guides sells promotion-exam prep for the US military — separate storefronts (“portals”) for the Air Force, Navy, and others, all served by one CakePHP application. By 2016 the front end had aged: jQuery 1.10.2, jQuery UI 1.10.4, the \`jquery.slides\` carousel, \`w2ui\` widgets, \`swfobject\` for Flash content, and a single site-wide stylesheet.
+
+The company wanted a fresher, more modern look to help conversion — a commercial refresh with a designer (April Bargatze) setting the direction. I was the sole developer on it, an employee at the time.`,
+
+    problem: `The site earns money every day. There was no appetite — correctly — for taking it offline for a rebuild, and the CakePHP application itself was structurally fine. So the work had to happen *in place*, on the running site, without a flag day where the old and new couldn’t coexist.
+
+Three things made that harder than a fresh build:
+
+1. **The jQuery stack was load-bearing.** Old plugins assumed old jQuery; bumping the version could break the carousel, the dialogs, the cart interactions.
+2. **One stylesheet for every portal.** Any CSS change to make the Air Force pages look modern risked the Navy pages, and vice versa.
+3. **Flash content** still existed and had to be replaced with HTML5 as it was retired.`,
+
+    goals: [
+      'A visibly more modern storefront, matching the designer’s direction',
+      'Bring the JavaScript libraries current without regressing existing behaviour',
+      'Responsive images for the mix of desktop and mobile traffic',
+      'Contain CSS changes to one portal at a time',
+      'Do it page by page on the live site, no downtime',
+    ],
+
+    keyDecisions: [
+      {
+        decision: 'Modernize in place, page by page — no rewrite branch, no big-bang launch',
+        rationale:
+          'A live revenue site and a one-person effort. The CakePHP app was sound; the problem was the front end. Shipping one modernized page at a time meant every change was small, reversible, and immediately in production where regressions would actually show.',
+        tradeoffs:
+          'A long tail — the Contact Us pages were still on the old styling a year in — and a stretch where two visual eras coexisted on the site. A rebuild would have been cleaner to look at mid-flight, but riskier and slower to any value.',
+      },
+      {
+        decision: 'Split the single site-wide stylesheet into per-concern and per-portal sheets',
+        rationale:
+          'One stylesheet meant every edit had site-wide blast radius. Splitting it — shared base, then per-portal overrides — let me restyle the Air Force storefront without touching the Navy one, and let each page load only the CSS it needed.',
+        tradeoffs:
+          'Some rule duplication across portals, more files to manage, and an include/build story to keep straight. Worth it for being able to change one portal without holding my breath about the others.',
+      },
+      {
+        decision: 'Upgrade jQuery by replacing what breaks, not by pinning',
+        rationale:
+          'Rather than freeze jQuery to keep old plugins alive, I audited what depended on it and moved forward: `jquery.slides` (unmaintained) was replaced with `slick`, and the rest was brought up to jQuery 2.2.4 / jQuery UI 1.12.1. The archive shows this landing between June and October 2017.',
+        tradeoffs:
+          'More up-front work than a version pin, and each replacement (the carousel especially) was its own small migration with its own testing.',
+      },
+    ],
+
+    implementation: `The modernized storefront (visible in the October 2017 archive capture of \`/AirForce\`) runs jQuery 2.2.4, jQuery UI 1.12.1, \`slick\` for the carousel, \`picturefill\` for responsive images, and \`balancetext\` for headline wrapping — up from jQuery 1.10.2 / \`jquery.slides\` in the 2015 capture. \`w2ui\` stayed; it wasn’t in the way.
+
+Each portal page was reworked against the designer’s direction, its markup updated for the new styling, and its stylesheet needs pulled out of the monolith into the split structure. Flash pieces were rebuilt in HTML5 as they were retired — a company decision on the retirement, my implementation of the replacement.`,
+
+    challenges: `**Two eras on one site.** For months the storefront had modernized pages next to un-modernized ones. Keeping shared components (header, cart, footer) working and looking acceptable across both was ongoing.
+
+**The carousel swap.** \`jquery.slides\` → \`slick\` wasn’t a drop-in — different markup, different options, different callbacks — and it was on the most-trafficked pages.
+
+**No staging parity I fully controlled.** Working on a live CakePHP app as one developer meant testing changes carefully and shipping in small increments rather than relying on a full staging mirror.`,
+
+    results: `The public storefront was brought current — measurable from the Internet Archive: jQuery 1.10.2 → 2.2.4, jQuery UI 1.10.4 → 1.12.1, \`jquery.slides\` → \`slick\`, \`picturefill\` added, between the 2015 and October-2017 \`/AirForce\` captures. The site stayed live throughout and is still running today, further evolved since.
+
+I have no data on whether the refresh moved conversion — that wasn’t shared with me.`,
+
+    whatIdChange: `**Set a finish line for the tail.** The page-by-page approach was right, but the last pages (Contact Us) lingered on the old styling far too long. A short, scheduled sprint to close out the stragglers would have ended the two-eras period sooner.
+
+**Write down the stylesheet architecture.** The split worked, but it lived mostly in my head. A one-page note on which sheet owns what would have made it safe for the next person to touch — and, given I have no retained files, would have made this write-up less reliant on memory.`,
+
+    links: [
+      {
+        label: 'Before — the AirForce storefront in 2015 (Internet Archive)',
+        url: 'https://web.archive.org/web/20150718080457/http://mcmguides.com/AirForce',
+        kind: 'archive',
+      },
+      {
+        label: 'After — modernized, October 2017 (Internet Archive)',
+        url: 'https://web.archive.org/web/20171023004337/http://mcmguides.com/AirForce',
+        kind: 'archive',
+      },
+      { label: 'The storefront today', url: 'https://mcmguides.com/AirForce', kind: 'live' },
+    ],
+  },
   featured: true,
 });

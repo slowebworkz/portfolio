@@ -18,10 +18,14 @@ describe('WorkDetail', () => {
     expect(screen.getByRole('heading', { level: 3, name: /key decisions/i })).toBeInTheDocument();
   });
 
-  it('renders no case study section for a project without one', async () => {
+  it('omits the package line for a project that is not a published package', async () => {
     renderAt('/work/mcmillan-study-guides-redesign');
 
     await screen.findByRole('heading', { level: 1 });
-    expect(screen.queryByRole('heading', { name: /case study/i })).not.toBeInTheDocument();
+    expect(screen.queryByText(/downloads\/week/i)).not.toBeInTheDocument();
   });
+
+  // The `{project.caseStudy && <CaseStudy>}` guard's absent-case is covered by
+  // CaseStudy.test.tsx ("omits subsections that are not provided"); every real
+  // project now carries a case study.
 });
