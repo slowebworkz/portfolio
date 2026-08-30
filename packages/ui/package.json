@@ -5,6 +5,7 @@
   "type": "module",
   "description": "Shared presentation primitives and design-system infrastructure. No design system built yet; existing external component library is not vendored here.",
   "scripts": {
-    "typecheck": "tsc --build"
+    "typecheck": "tsc --build",
+    "clean": "tsc --build --clean && rm -rf dist"
   }
 }

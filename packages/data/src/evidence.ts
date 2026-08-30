@@ -1,18 +1,27 @@
 import * as v from 'valibot';
 
-import { ClaimConfidenceSchema, IsoDateSchema } from './common.js';
+import { ClaimConfidenceSchema, IsoDateSchema } from './common.ts';
 
 /**
- * Evidence backing a project or a specific claim about it. The archive is
- * *evidence*, not a licence to republish an old site — see the plan's
- * historical-work section.
+ * Evidence backing a project or a claim about it. For much of the historical
+ * work the public archive is the *only* citable evidence — nothing was
+ * retained. The archive is evidence, not a licence to republish an old site.
  */
+
+/**
+ * What an evidence item shows, relative to the work: the state before it, the
+ * result after it, earlier `context` in the site's lineage, or `supporting`
+ * material (a repo, a record).
+ */
+export const EvidenceRoleSchema = v.picklist(['before', 'after', 'context', 'supporting']);
+export type EvidenceRole = v.InferOutput<typeof EvidenceRoleSchema>;
 
 const base = {
   /** Stable id, unique within the project (referenced from case-study prose). */
   id: v.pipe(v.string(), v.minLength(1)),
   label: v.pipe(v.string(), v.minLength(1)),
   confidence: ClaimConfidenceSchema,
+  role: v.optional(EvidenceRoleSchema),
 };
 
 /** An Internet Archive / Wayback Machine capture. */
@@ -30,6 +39,14 @@ export const SourceEvidenceSchema = v.object({
   kind: v.literal('source'),
   url: v.pipe(v.string(), v.url()),
   path: v.optional(v.string()),
+});
+
+/** A published package listing (npm, etc.). */
+export const PackageEvidenceSchema = v.object({
+  ...base,
+  kind: v.literal('package'),
+  url: v.pipe(v.string(), v.url()),
+  registry: v.optional(v.string()),
 });
 
 /** Any other live URL: the current site, an article, an external screenshot. */
@@ -57,6 +74,7 @@ export const AccountEvidenceSchema = v.object({
 export const EvidenceSchema = v.variant('kind', [
   WaybackEvidenceSchema,
   SourceEvidenceSchema,
+  PackageEvidenceSchema,
   LinkEvidenceSchema,
   ArtifactEvidenceSchema,
   AccountEvidenceSchema,

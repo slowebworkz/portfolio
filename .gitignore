@@ -4,6 +4,7 @@ node_modules/
 
 # Build output
 dist/
+dist-server/
 build/
 lib/
 *.tsbuildinfo
@@ -11,6 +12,10 @@ lib/
 # Test / coverage
 coverage/
 *.lcov
+
+# @portfolio/archive working dir — downloaded captures and CDX dumps.
+# Research notes distilled from these go into content by hand.
+.archive/
 
 # Environment / secrets
 .env

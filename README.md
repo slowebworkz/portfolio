@@ -18,21 +18,22 @@ material.
 
 ```text
 apps/
-  web/       The portfolio site: React + Vite + TypeScript. Shell only —
-             routing, layout, and an accessibility baseline, rendering
-             placeholder fixture data (see "Frontend" below).
+  web/       The portfolio site: React + Vite + TypeScript. Routing, layout,
+             and an accessibility baseline, rendering real content from
+             @portfolio/content (see "Frontend" below).
 packages/
-  content/   Structured portfolio content (projects, case studies, writing,
-             profile/about, experience, capabilities). No content authored yet.
-  data/      Shared domain models, types, and validation schemas. Presentation-
-             agnostic. No database.
+  content/   The authored portfolio content — three projects, the profile, and
+             a résumé-style experience timeline; case studies and writing
+             later. Plain typed modules validated against @portfolio/data.
+  data/      Domain model and valibot validation schemas. Presentation- and
+             storage-agnostic. Designed against the real work inventory.
   archive/   Node/TypeScript tooling for researching historical websites,
              primarily the Internet Archive Wayback Machine / CDX API (capture
              discovery, archived-page retrieval, metadata extraction, evidence
              tracking). Not implemented yet.
   ui/        Shared presentation primitives and design-system infrastructure.
-             No design system built yet. An existing external React component
-             library remains a separate package and is not vendored here.
+             Not built yet; likely built on `praxis-kit` (the author's
+             published framework, in the dependency catalog).
 configs/     ESLint config split into composable modules (base, typescript),
              assembled by the root `eslint.config.ts`.
 docs/        Repository documentation. `architecture.md` defines what each
@@ -43,8 +44,8 @@ inventory/   Private catalogue of candidate portfolio work, used to design the
 scripts/     Repository-level development and maintenance scripts. Empty for now.
 ```
 
-Every package currently holds only a placeholder `src/index.ts` (`export {}`) so
-that `tsc --build` has an input; no real code is authored yet.
+`archive` and `ui` still hold only a placeholder `src/index.ts`; `data`,
+`content`, and `apps/web` are real.
 
 ## Tooling
 
@@ -54,6 +55,8 @@ that `tsc --build` has an input; no real code is authored yet.
 - **Node.js:** current LTS (24.x), pinned in `.nvmrc`; `packageManager` in the
   root `package.json` pins the pnpm version.
 - **Modules:** ESM throughout (`"type": "module"`, `NodeNext` resolution).
+  Relative imports name the real source file (`./x.ts`), rewritten on emit via
+  `rewriteRelativeImportExtensions`.
 - **TypeScript:** a single strict root `tsconfig.json` holds the shared compiler
   options (`composite` enabled); each package has a small `tsconfig.json` that
   extends it and sets only `rootDir` / `outDir` / `include`. Each package's
@@ -75,30 +78,45 @@ pnpm format           # check; `pnpm format:write` to apply
 pnpm typecheck        # runs each package's typecheck script if present
 pnpm test
 pnpm build            # runs each package's build script if present
-pnpm --filter @portfolio/web dev   # run the site locally
+pnpm dev              # run the site locally (Vite dev server)
+pnpm preview          # serve the production build
 ```
 
 ## CI
 
-`.github/workflows/ci.yml` checks out the repo, enables pnpm, sets up Node from
-`.nvmrc`, installs with the frozen lockfile, and runs lint, format check,
-typecheck, tests, and build. It is written to stay useful as packages are
-added: the aggregate scripts fan out across the workspace. A deployment step
-will be added once the site is ready to publish.
+There is no CI workflow. On a private repo it spent GitHub Actions minutes
+re-running the same checks on every PR sync and again after merge, which is not
+worth it for a solo project. Instead, verification runs locally on `git push`:
+
+```sh
+git config core.hooksPath .githooks   # one-time, per clone
+```
+
+`.githooks/pre-push` runs `pnpm check` (lint, format check, typecheck, tests,
+build). Skip it once with `git push --no-verify`. The `deploy.yml` build on
+`main` still fails loudly if a broken build reaches it; the live site keeps
+serving the last good deploy.
+
+`.github/workflows/deploy.yml` runs on push to `main`: it builds the
+prerendered site and publishes `apps/web/dist` to **GitHub Pages**. It needs
+Pages set to the "GitHub Actions" source once, in the repo settings.
 
 ## Frontend
 
-The delivery app (`apps/web`) is **React + Vite + TypeScript**. So far it is a
-shell — `react-router` routing, a base layout, and an accessibility baseline
-(skip link, landmarks, focus styles, reduced-motion and colour-scheme support),
-rendering placeholder fixture data typed with `@portfolio/data`. The portfolio
-is a content-driven, static-first site: the priority is prerendering,
-performance, semantic HTML, accessibility, straightforward deployment, and
-minimal runtime complexity — and Vite is also a natural home for the existing
-React component library.
+The delivery app (`apps/web`) is **React + Vite + TypeScript**: `react-router`
+routing, a base layout, and an accessibility baseline (skip link, landmarks,
+focus styles, reduced-motion and colour-scheme support), rendering the real
+projects, profile, and experience from `@portfolio/content`. The portfolio is a
+content-driven, static-first site: the priority is performance, semantic HTML,
+accessibility, straightforward deployment, and minimal runtime complexity.
 
-Prerendering / static generation is not wired up yet; it comes with the first
-real project (Phase 4 of the plan).
+**Prerendering:** `pnpm build` renders every route to static HTML
+(`vite build` for the client bundle, a second `--ssr` build of
+`src/entry-server.tsx`, then `scripts/prerender.mjs` walks the routes). Pages
+work with JavaScript disabled and hydrate into an interactive SPA. A `404.html`
+copy is the SPA fallback for any path not prerendered. `SITE_BASE` controls the
+public base path (`/` by default; `/portfolio/` for a GitHub Pages project
+site).
 
 Next.js / SSR / server functions are deliberately deferred until a concrete
 requirement calls for them. `content` and `data` stay framework-neutral, so a
@@ -113,16 +131,19 @@ adopted later if build times or task orchestration justify it.
 
 ## Direction
 
-1. Compile a private inventory of past and current work (`inventory/`).
-2. Design the domain model in `data` against that inventory; author content
-   against it in `content` (leaning toward `project.yaml` + `case-study.mdx`).
-3. Build `apps/web` (React + Vite) consuming `content` and `data`.
-4. Take one strong project all the way through — content, schema, page, case
-   study, tests, deployment — to validate the architecture.
+1. Compile a private inventory of past and current work (`inventory/`). _Ongoing._
+2. Design the domain model in `data` against that inventory and author the
+   projects in `content`. _Done for the first three projects; case studies and
+   more entries still to come._
+3. Build `apps/web` (React + Vite) consuming `content` and `data`. _Pages,
+   profile, and experience render; prerendered to static HTML; deploys to
+   GitHub Pages. Design-system pass still to do._
+4. Take one strong project all the way through — long-form case study,
+   interactive elements — to validate the architecture. _Case studies are next._
 5. Build out `archive` as Wayback/CDX research tooling and fold validated
    historical evidence into the content.
-6. Expand: more case studies, writing, technical demos; revisit hosting
-   (GitHub Pages vs Vercel), build orchestration, and framework experiments.
+6. Expand: more case studies, writing, technical demos; build orchestration and
+   framework experiments if warranted.
 
 Guiding principle: start simple, add complexity when the system earns it.
 Projects are presented as engineering stories with evidence, not technology

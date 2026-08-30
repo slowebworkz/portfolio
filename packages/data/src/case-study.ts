@@ -1,6 +1,6 @@
 import * as v from 'valibot';
 
-import { LinkSchema } from './common.js';
+import { LinkSchema } from './common.ts';
 
 /**
  * A key architectural or technical decision, with its reasoning. Kept as

@@ -3,8 +3,15 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Structured portfolio content: projects, case studies, writing, profile, experience, capabilities. No content authored yet.",
+  "description": "Authored portfolio content, validated against @portfolio/data. No content framework — plain typed modules.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
   "scripts": {
-    "typecheck": "tsc --build"
+    "typecheck": "tsc --build",
+    "clean": "tsc --build --clean && rm -rf dist"
+  },
+  "dependencies": {
+    "@portfolio/data": "workspace:*"
   }
 }

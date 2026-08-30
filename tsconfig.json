@@ -17,6 +17,11 @@
     "forceConsistentCasingInFileNames": true,
     "verbatimModuleSyntax": true,
 
+    /* Relative imports name the real source file (`./x.ts`); tsc rewrites the
+       extension on emit. Keeps import specifiers consistent across the repo. */
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
+
     "composite": true,
     "declaration": true,
     "declarationMap": true,

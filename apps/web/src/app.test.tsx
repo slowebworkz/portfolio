@@ -1,35 +1,62 @@
 import { render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { describe, expect, it } from 'vitest';
 
-import { routes } from './router.tsx';
+import { routePaths } from './entry-server.tsx';
+import { routes } from './routes.tsx';
 
 function renderAt(path: string) {
   const router = createMemoryRouter(routes, { initialEntries: [path] });
-  return render(<RouterProvider router={router} />);
+  return { router, ...render(<RouterProvider router={router} />) };
 }
 
+const projectPath = routePaths.find((path) => path.startsWith('/work/'));
+
 describe('app shell', () => {
-  it('renders the home page with primary navigation', async () => {
-    renderAt('/');
-    expect(
-      await screen.findByRole('heading', { level: 1, name: /engineering portfolio/i }),
-    ).toBeInTheDocument();
-    const nav = screen.getByRole('navigation', { name: /primary/i });
-    expect(within(nav).getByRole('link', { name: 'Work' })).toBeInTheDocument();
+  it.each(routePaths)('resolves and renders %s', async (path) => {
+    renderAt(path);
+    expect(await screen.findByRole('main')).toBeInTheDocument();
   });
 
-  it('renders a project detail page from the slug', async () => {
-    renderAt('/work/component-library');
-    expect(
-      await screen.findByRole('heading', { level: 1, name: /component library/i }),
-    ).toBeInTheDocument();
-  });
-
-  it('renders a not-found page for an unknown route', async () => {
+  it('renders the not-found route for an unknown path', async () => {
     renderAt('/nope');
-    expect(
-      await screen.findByRole('heading', { level: 1, name: /page not found/i }),
-    ).toBeInTheDocument();
+    expect(await screen.findByTestId('not-found')).toBeInTheDocument();
+  });
+
+  it('syncs the document title and canonical link with the route', async () => {
+    renderAt('/about');
+    await screen.findByRole('main');
+
+    expect(document.title).toBe('About · Karsten Huehn');
+    expect(document.querySelector('link[rel="canonical"]')?.getAttribute('href')).toMatch(
+      /\/about$/u,
+    );
+  });
+
+  it('navigates from the home page to the work index via the primary nav', async () => {
+    const user = userEvent.setup();
+    const { router } = renderAt('/');
+
+    const nav = screen.getByRole('navigation', { name: /primary/i });
+    await user.click(within(nav).getByRole('link', { name: 'Work' }));
+
+    await screen.findByRole('main');
+    expect(router.state.location.pathname).toBe('/work');
+  });
+
+  it('navigates from the work index into a project detail page', async () => {
+    expect(projectPath).toBeDefined();
+
+    const user = userEvent.setup();
+    const { router } = renderAt('/work');
+
+    const link = (await screen.findAllByRole('link')).find(
+      (anchor) => anchor.getAttribute('href') === projectPath,
+    );
+    expect(link).toBeDefined();
+    await user.click(link as HTMLElement);
+
+    expect(router.state.location.pathname).toBe(projectPath);
   });
 });

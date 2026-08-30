@@ -27,19 +27,31 @@ catalog:
   # Validation
   valibot: ^1.4.2
 
+  # Archive tooling
+  node-html-parser: ^9.0.2
+
+  # UI — the author's own published framework (github.com/slowebworkz/praxis-kit).
+  # Declared here as an available external dependency; no package consumes it yet.
+  praxis-kit: ^7.8.1
+
   # React / app
   react: ^19.2.8
   react-dom: ^19.2.8
   react-router: ^8.3.0
+  react-markdown: ^10.1.0
+  remark-gfm: ^4.0.1
   '@types/react': ^19.2.18
   '@types/react-dom': ^19.2.5
   vite: ^8.2.2
   '@vitejs/plugin-react': ^6.1.0
+  tailwindcss: ^4.3.3
+  '@tailwindcss/vite': ^4.3.3
 
   # Testing
   vitest: ^4.1.11
   '@testing-library/react': ^16.3.3
   '@testing-library/jest-dom': ^7.0.1
+  '@testing-library/user-event': ^14.6.6
   happy-dom: ^20.11.12
 
 minimumReleaseAgeExclude:

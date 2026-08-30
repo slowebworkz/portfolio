@@ -3,26 +3,36 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "The portfolio site. React + Vite + TypeScript. Shell only — no real content yet.",
+  "description": "The portfolio site. React + Vite + TypeScript.",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "pnpm run build:client && pnpm run build:server && pnpm run prerender",
+    "build:client": "vite build",
+    "build:server": "vite build --ssr src/entry-server.tsx --outDir dist-server",
+    "prerender": "node scripts/prerender.mjs",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist dist-server"
   },
   "dependencies": {
+    "@portfolio/content": "workspace:*",
     "@portfolio/data": "workspace:*",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "react-router": "catalog:"
+    "react-markdown": "catalog:",
+    "react-router": "catalog:",
+    "remark-gfm": "catalog:"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "catalog:",
     "@testing-library/jest-dom": "catalog:",
     "@testing-library/react": "catalog:",
+    "@testing-library/user-event": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "@vitejs/plugin-react": "catalog:",
     "happy-dom": "catalog:",
+    "tailwindcss": "catalog:",
     "vite": "catalog:",
     "vitest": "catalog:"
   }
